@@ -1,0 +1,17 @@
+diff --git a/server/engine/src/server/login/LoginThread.ts b/server/engine/src/server/login/LoginThread.ts
+index 0dfd44f62cd61b80b1c47bb3196c41f0a0750468..4b1669801ab16f64517f6056e4af8c805505f5a5 100644
+--- a/server/engine/src/server/login/LoginThread.ts
++++ b/server/engine/src/server/login/LoginThread.ts
+@@ -56,8 +56,10 @@ async function handleRequests(parentPort: ParentPort, msg: any) {
+                 });
+                 stopTimer();
+             } else {
+-                // rs-sdk: do not auto-grant dev staffmodlevel on non-production worlds (public server)
+-                const staffmodlevel = 0;
++                // rs-sdk: do not auto-grant dev staffmodlevel on non-production worlds (public server).
++                // LOCAL_STAFF_LEVEL opts back in for private local iteration (::tele, ::give, ::~debugprocs);
++                // it is ignored on production worlds and unused by the demo (which runs LOGIN_SERVER=true).
++                const staffmodlevel = Environment.node.production ? 0 : Number(process.env.LOCAL_STAFF_LEVEL ?? 0);
+ 
+                 const profile = Environment.node.profile;
+                 if (!fs.existsSync(`data/players/${profile}`)) {

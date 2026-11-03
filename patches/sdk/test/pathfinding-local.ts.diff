@@ -1,0 +1,93 @@
+diff --git a/sdk/test/pathfinding-local.ts b/sdk/test/pathfinding-local.ts
+index 3f6c3b23e7805d81211768361115670129896590..a025f4f48d756af09755c13090732c15c12f6ae2 100644
+--- a/sdk/test/pathfinding-local.ts
++++ b/sdk/test/pathfinding-local.ts
+@@ -2,7 +2,7 @@
+ // Local pathfinding validation - no server or bot required
+ // Tests that the collision data + door masking produces correct paths
+ 
+-import { findLongPath, findDoorsAlongPath, initPathfinding, isTileWalkable, isFlagged, isZoneLikelyLand, isZoneAllocated } from '../pathfinding';
++import { findLongPath, findDoorsAlongPath, initPathfinding, isTileWalkable, isFlagged, isZoneLikelyLand, isZoneAllocated, blockDoor, TemporaryDoorBlocklist } from '../pathfinding';
+ import { CollisionFlag } from '../../server/vendor/rsmod-pathfinder';
+ 
+ console.log('Initializing pathfinding...');
+@@ -200,6 +200,79 @@ if (openFieldDoors.length === 0) {
+     passed++; // not a hard failure
+ }
+ 
++console.log('\n--- Temporary Door Blocklist Tests ---');
++
++// A blocklist passed to findLongPath must (a) actually change routing for the duration of that
++// one query, and (b) leave the SHARED collision map exactly as it found it — a leaked wall would
++// silently break every other bot in this process. Route through the Lumbridge castle doorway.
++{
++    const before = findLongPath(0, 3222, 3215, 3205, 3210);
++    const routeDoors = findDoorsAlongPath(before);
++    const blocklist = new TemporaryDoorBlocklist();
++    for (const d of routeDoors) blocklist.block(d);
++
++    const withBlocks = findLongPath(0, 3222, 3215, 3205, 3210, 500, blocklist.active());
++    const after = findLongPath(0, 3222, 3215, 3205, 3210);
++
++    const same = (a: typeof before, b: typeof before) => JSON.stringify(a) === JSON.stringify(b);
++
++    if (routeDoors.length === 0) {
++        console.log('  FAIL: no doors found along the Lumbridge castle route — blocklist untestable here');
++        failed++;
++    } else if (same(before, withBlocks)) {
++        console.log(`  FAIL: blocking ${routeDoors.length} on-route door(s) did not change the route`);
++        failed++;
++    } else {
++        console.log(`  PASS: blocking ${routeDoors.length} on-route door(s) re-routed (${before.length} -> ${withBlocks.length} waypoints)`);
++        passed++;
++    }
++
++    if (same(before, after)) {
++        console.log('  PASS: collision map restored after the blocked query (identical route again)');
++        passed++;
++    } else {
++        console.log('  FAIL: collision map LEAKED — route after the blocked query differs from before');
++        failed++;
++    }
++
++    // Expiry: an expired entry must drop out of active(), so routing goes back to normal by itself.
++    let clock = 0;
++    const ttl = new TemporaryDoorBlocklist(() => clock);
++    ttl.block(routeDoors[0]!, 30_000);
++    clock = 30_001;
++    const expired = findLongPath(0, 3222, 3215, 3205, 3210, 500, ttl.active());
++    if (ttl.active().length === 0 && same(before, expired)) {
++        console.log('  PASS: expired entry stops affecting routing (TTL self-heals)');
++        passed++;
++    } else {
++        console.log('  FAIL: expired entry still influenced routing');
++        failed++;
++    }
++}
++
++// A door taken out PERMANENTLY by blockDoor() must stay out: a stale blocklist entry for it must
++// not be applied-then-reverted, which would silently re-open the permanent block.
++{
++    const door = findDoorsAlongPath(findLongPath(0, 3222, 3215, 3205, 3210))[0];
++    if (!door) {
++        console.log('  FAIL: no door available for the permanent-block interaction test');
++        failed++;
++    } else {
++        const stale = new TemporaryDoorBlocklist();
++        stale.block(door);
++        blockDoor(door.level, door.x, door.z);
++        const blockedRoute = findLongPath(0, 3222, 3215, 3205, 3210, 500, stale.active());
++        const afterRoute = findLongPath(0, 3222, 3215, 3205, 3210);
++        if (JSON.stringify(blockedRoute) === JSON.stringify(afterRoute)) {
++            console.log('  PASS: permanent blockDoor() survives a stale temporary entry for the same door');
++            passed++;
++        } else {
++            console.log('  FAIL: stale temporary entry reverted a permanently blocked door');
++            failed++;
++        }
++    }
++}
++
+ console.log('\n--- Water / Ocean Avoidance Tests ---');
+ 
+ // Known water/ocean tiles should NOT be walkable land

@@ -1,0 +1,72 @@
+diff --git a/server/vendor/rsmod-pathfinder/rsmod-pathfinder.js b/server/vendor/rsmod-pathfinder/rsmod-pathfinder.js
+index 4f4033fd77ea94a7c89caa22aeef4de28f53497e..29933bea34bdec94cf1bb1687684470346de0727 100644
+--- a/server/vendor/rsmod-pathfinder/rsmod-pathfinder.js
++++ b/server/vendor/rsmod-pathfinder/rsmod-pathfinder.js
+@@ -553,3 +553,67 @@ module.exports.__wasm = wasm;
+ 
+ wasm.__wbindgen_start();
+ 
++// ---- our private repo WASM TRAP GUARD --------------------------------
++// A wasm trap never unwinds the shadow stack: __stack_pointer stays ~240 B lower after every trap, so a run of
++// traps (live: a failed memory.grow, "Unreachable code") exhausts the 1 MB stack after ~4,370 of them and from then
++// on EVERY call is "Out of bounds memory access", forever, even once memory is free again. The only cure is a
++// FRESH instance with the collision rebuilt. This block is inert (one null test per call) until sdk/pathfinding.ts
++// installs __guard.onTrap; the 289 engine has its own TS pathfinder and never loads this file.
++module.exports.__reinstantiate = function () {
++    wasm = new WebAssembly.Instance(wasmModule, imports).exports;
++    module.exports.__wasm = wasm;
++    cachedUint8ArrayMemory0 = null;
++    cachedUint32ArrayMemory0 = null;
++    wasm.__wbindgen_start();
++};
++// the CURRENT instance (`__wasm` above is a load-time snapshot for ESM importers; it goes stale after a reinstantiate)
++module.exports.__wasmNow = function () { return wasm; };
++const GUARD_MUTATORS = ['__set', 'allocateIfAbsent', 'deallocateIfPresent', 'changeFloor', 'changeRoof', 'changeWall', 'changeLoc', 'changeNpc', 'changePlayer'];
++// what a trapped call returns when the recovery could not answer it: no path / blocked / unreachable
++const GUARD_FALLBACK = { findPath: 'path', findLongPath: 'path', findNaivePath: 'path', lineOfSight: 'path', lineOfWalk: 'path',
++    isFlagged: true, canTravel: false, reached: false, hasLineOfSight: false, hasLineOfWalk: false, isZoneAllocated: false, locShapeLayer: undefined };
++const __guard = module.exports.__guard = {
++    onTrap: null,     // (name, err, retry) => value, or undefined for this call's fallback. Set by sdk/pathfinding.ts.
++    journal: null,    // Map key -> [name, args]: collision edits since init, last write per key, replayed into a fresh instance
++    poisoned: false,  // a rebuild failed: every call is treated as a trap until a later recovery succeeds
++    inject: 0,        // TESTS: the next N wasm calls throw a synthetic WebAssembly.RuntimeError
++    raw: {},          // the unguarded functions (a replay must neither re-journal nor re-enter the guard)
++};
++function guardJournal(name, a) {
++    let key;
++    if (name === 'allocateIfAbsent' || name === 'deallocateIfPresent') key = `zone,${a[0] >> 3},${a[1] >> 3},${a[2]}`;
++    else { key = name; for (let i = 0; i < a.length - 1; i++) key += ',' + a[i]; }   // the last arg is the add flag / the __set mask
++    __guard.journal.delete(key);   // re-insert at the END: replay order = order of the last write per key
++    __guard.journal.set(key, [name, Array.prototype.slice.call(a)]);
++}
++function guardRaw(raw, args) {
++    if (__guard.poisoned) throw new WebAssembly.RuntimeError('pathfinder poisoned (rebuild failed, waiting for the next recovery)');
++    if (__guard.inject > 0) { __guard.inject--; throw new WebAssembly.RuntimeError('injected trap (test)'); }
++    return raw.apply(null, args);
++}
++function guardTrap(name, fb, raw, args, e) {
++    if (!(e instanceof WebAssembly.RuntimeError) || __guard.onTrap === null) throw e;
++    const v = __guard.onTrap(name, e, () => guardRaw(raw, args));
++    if (v !== undefined) return v;
++    return fb === 'path' ? new Uint32Array(0) : fb;
++}
++for (const name of [...GUARD_MUTATORS, ...Object.keys(GUARD_FALLBACK)]) {
++    const raw = module.exports[name];
++    __guard.raw[name] = raw;
++    const mut = GUARD_MUTATORS.includes(name);
++    const fb = GUARD_FALLBACK[name];
++    const n = raw.length;
++    // FIXED ARITY on the hot path (no `arguments`, no apply): reach floods make millions of isFlagged/canTravel calls
++    module.exports[name] = function (a, b, c, d, e, f, g, h, i, j, k, l, m, o) {
++        if (mut && __guard.journal !== null) guardJournal(name, [a, b, c, d, e, f, g, h, i, j, k, l, m, o].slice(0, n));
++        if (__guard.poisoned === false && __guard.inject === 0) {
++            if (__guard.onTrap === null) return raw(a, b, c, d, e, f, g, h, i, j, k, l, m, o);
++            try { return raw(a, b, c, d, e, f, g, h, i, j, k, l, m, o); }
++            catch (err) { return guardTrap(name, fb, raw, [a, b, c, d, e, f, g, h, i, j, k, l, m, o].slice(0, n), err); }
++        }
++        const args = [a, b, c, d, e, f, g, h, i, j, k, l, m, o].slice(0, n);
++        try { return guardRaw(raw, args); }
++        catch (err) { return guardTrap(name, fb, raw, args, err); }
++    };
++}
++

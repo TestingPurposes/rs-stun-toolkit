@@ -1,0 +1,28 @@
+diff --git a/server/engine/src/network/game/client/handler/ClientCheatHandler.ts b/server/engine/src/network/game/client/handler/ClientCheatHandler.ts
+index e1debea5921ec5ad1018f9a4411850218fde9123..5b7727b0ef0e0cf241b36d4a9306b4c617fce870 100644
+--- a/server/engine/src/network/game/client/handler/ClientCheatHandler.ts
++++ b/server/engine/src/network/game/client/handler/ClientCheatHandler.ts
+@@ -1,3 +1,4 @@
++import fs from 'fs';
+ import v8 from 'node:v8';
+ 
+ import { Visibility } from '#/network/rsbuf/index.js';
+@@ -544,6 +545,18 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
+             } else if (cmd === 'snapshot') {
+                 const heap = v8.writeHeapSnapshot();
+                 printDebug(`Heap snapshot written to: ${heap}`);
++            } else if (cmd === 'simsave' && process.env.SIM_LOCKSTEP === '1') {
++                // rs-sdk OFFLINE SIM: ::simsave <name> writes this player's current save as data/players/<profile>/<name>.sav
++                // (a fork point: logging in as <name> resumes from exactly this state). Sim engines only.
++                const name = (args[0] ?? '').toLowerCase();
++                if (!/^[a-z0-9_]{1,12}$/.test(name)) {
++                    player.messageGame('simsave: name must be 1-12 of [a-z0-9_]');
++                    return false;
++                }
++                const dir = `data/players/${Environment.node.profile}`;
++                fs.mkdirSync(dir, { recursive: true });
++                fs.writeFileSync(`${dir}/${name}.sav`, player.save(false));
++                player.messageGame(`simsave: ${name}`);
+             }
+         }
+ 

@@ -1,0 +1,18 @@
+diff --git a/server/engine/src/setup.ts b/server/engine/src/setup.ts
+index d4197f4f0d02368ffecd95fbfdf2bbe15ed6e02a..0ea152f58c97fb5bce3ab48538b0c861d9530998 100644
+--- a/server/engine/src/setup.ts
++++ b/server/engine/src/setup.ts
+@@ -256,8 +256,12 @@ function tryOpenBrowser(url: string): void {
+     const command = process.platform === 'win32' ? `cmd /c ${openCmd} "" "${url}"` : `${openCmd} "${url}"`;
+ 
+     try {
++        // No `detached: true`, deliberately: a detached child under
++        // that runtime never executes and emits no 'error' event, so the browser silently never opened.
++        // Nothing here needs to outlive us anyway - the launcher (`cmd /c start` / `xdg-open` / `open`)
++        // hands the browser off to the shell and exits immediately, and this process stays up serving
++        // the setup page regardless.
+         const child = spawn(command, {
+-            detached: true,
+             shell: true,
+             stdio: 'ignore'
+         });

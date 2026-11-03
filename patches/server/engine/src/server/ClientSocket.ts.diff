@@ -1,0 +1,23 @@
+diff --git a/server/engine/src/server/ClientSocket.ts b/server/engine/src/server/ClientSocket.ts
+index d47ff3e9c5282608059a1b718e1687361eb37741..cf66bf2199953690366d7beebc18b8684d91098d 100644
+--- a/server/engine/src/server/ClientSocket.ts
++++ b/server/engine/src/server/ClientSocket.ts
+@@ -22,7 +22,18 @@ export default abstract class ClientSocket {
+     opcode = -1; // current opcode being read
+     waiting = 0; // bytes to wait for (if any)
+ 
++    lastRecvAt = 0;   // rs-sdk offline sim: World.simAwaitAcks waits for every client's post-tick packet
++    // rs-sdk offline sim perf: set by World.simAwaitAcks (SIM_LOCKSTEP=1 only); wakes the ack check on a read (null = off)
++    static simOnRecv: (() => void) | null = null;
++
++    lastRecvPerf = 0;   // rs-sdk offline sim perf (SIM_PROF only): performance.now() of the last read
++    static simProf = false;
++    static simAnyRecvAt = 0;   // rs-sdk offline sim (SIM_IDLE_HOLD): Date.now() of the last read on any socket
++
+     buffer(data: Buffer) {
++        this.lastRecvAt = ClientSocket.simAnyRecvAt = Date.now();
++        if (ClientSocket.simProf) this.lastRecvPerf = performance.now();
++        if (ClientSocket.simOnRecv !== null) ClientSocket.simOnRecv();
+         if (data.length + this.in.pos > this.in.length) {
+             this.close();
+             return;

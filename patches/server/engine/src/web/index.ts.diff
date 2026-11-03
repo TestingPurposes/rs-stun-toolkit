@@ -1,0 +1,33 @@
+diff --git a/server/engine/src/web/index.ts b/server/engine/src/web/index.ts
+index 90f70592f8fb3d507f5c9a6375301991a3d4d217..8619bb615ac7c14a4e20fda039b3101a115e8aa5 100644
+--- a/server/engine/src/web/index.ts
++++ b/server/engine/src/web/index.ts
+@@ -101,6 +101,28 @@ async function handleRequest(req: Request, server: Bun.Server, url: URL): Promis
+             const marketResponse = handleMarket(req, url);
+             if (marketResponse) return marketResponse;
+ 
++            // rs-sdk OFFLINE SIM (sim fusion 2): the world's tick counter, for the runner's virtual clock (vclock.ts):
++            // reconnect back-offs wait N ENGINE ticks while none of the runner's bots is connected. Sim engines only.
++            if (url.pathname === '/simtick' && process.env.SIM_LOCKSTEP === '1') {
++                return new Response(String(World.currentTick), { headers: { 'Content-Type': 'text/plain' } });
++            }
++
++            // rs-sdk OFFLINE SIM (scenario harness, plan/quests/SCENARIO-HARNESS.md): GET /simsave?user=<name>&as=<savename> writes a
++            // connected player's current save (Player.save(false), no checkpoint) to data/players/<profile>/<savename>.sav and
++            // answers the tick it was taken on. Runs between two cycles (single thread), so the state is one whole tick. Lets the
++            // harness snapshot a running lockstep lane or route run without sending anything from its bot. Sim engines only.
++            if (url.pathname === '/simsave' && process.env.SIM_LOCKSTEP === '1') {
++                const user = (url.searchParams.get('user') ?? '').toLowerCase();
++                const as = (url.searchParams.get('as') ?? '').toLowerCase();
++                if (!/^[a-z0-9_]{1,12}$/.test(as)) return new Response('as: 1-12 of [a-z0-9_]', { status: 400 });
++                const player = World.getPlayerByUsername(user);
++                if (!player) return new Response(`no player ${user}`, { status: 404 });
++                const dir = `data/players/${Environment.node.profile}`;
++                (await import('fs')).mkdirSync(dir, { recursive: true });
++                (await import('fs')).writeFileSync(`${dir}/${as}.sav`, player.save(false));
++                return new Response(JSON.stringify({ tick: World.currentTick, user, as, x: player.x, z: player.z, level: player.level }), { headers: { 'Content-Type': 'application/json' } });
++            }
++
+             // Engine status endpoint
+             if (url.pathname === '/engine-status' || url.pathname === '/engine-status/') {
+                 return new Response(JSON.stringify({

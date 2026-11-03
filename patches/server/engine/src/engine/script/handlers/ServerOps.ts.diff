@@ -1,0 +1,22 @@
+diff --git a/server/engine/src/engine/script/handlers/ServerOps.ts b/server/engine/src/engine/script/handlers/ServerOps.ts
+index 99ec3f5c339fcfec061a915b1326103c747fbd35..bb22227ed81fa336e55b86fa92943e0423d51921 100644
+--- a/server/engine/src/engine/script/handlers/ServerOps.ts
++++ b/server/engine/src/engine/script/handlers/ServerOps.ts
+@@ -9,6 +9,7 @@ import { CommandHandlers } from '#/engine/script/ScriptRunner.js';
+ import ScriptState from '#/engine/script/ScriptState.js';
+ import { check, CoordValid, LocTypeValid, NumberPositive, SeqTypeValid, SpotAnimTypeValid, FindSquareValid } from '#/engine/script/ScriptValidators.js';
+ import World from '#/engine/World.js';
++import { simCrowdPhantom } from '#/simcrowd.js';
+ import Environment from '#/util/Environment.js';
+ import Midi from '#/cache/midi/Midi.js';
+ 
+@@ -124,7 +125,8 @@ const ServerOps: CommandHandlers = {
+     },
+ 
+     [ScriptOpcode.PLAYERCOUNT]: state => {
+-        state.pushInt(World.getTotalPlayers());
++        // rs-sdk OFFLINE SIM: SIM_CROWD_PHANTOM counts a proximity-despawned crowd as online (simcrowd.ts; 0 otherwise)
++        state.pushInt(World.getTotalPlayers() + simCrowdPhantom());
+     },
+ 
+     [ScriptOpcode.MAP_BLOCKED]: state => {

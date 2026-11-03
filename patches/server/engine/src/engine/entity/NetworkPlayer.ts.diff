@@ -1,0 +1,19 @@
+diff --git a/server/engine/src/engine/entity/NetworkPlayer.ts b/server/engine/src/engine/entity/NetworkPlayer.ts
+index 07f4adf32db229d4ab79aed9d49ae126933205e5..8aa93766d6f037ea13a4799380ade5f17095de93 100644
+--- a/server/engine/src/engine/entity/NetworkPlayer.ts
++++ b/server/engine/src/engine/entity/NetworkPlayer.ts
+@@ -1,5 +1,6 @@
+ import * as rsbuf from '#/network/rsbuf/index.js';
+ 
++import { SIM_TRACE, simTraceInput } from '#/simprof.js';   // rs-sdk OFFLINE SIM: SIM_TRACE
+ import InvType from '#/cache/config/InvType.js';
+ import { CoordGrid } from '#/engine/CoordGrid.js';
+ import { ModalState } from '#/engine/entity/ModalState.js';
+@@ -130,6 +131,7 @@ export class NetworkPlayer extends Player {
+         this.client.read(NetworkPlayer.inBuf.data, 0, this.client.waiting);
+ 
+         const packetType = ClientGameProt.byId[this.client.opcode];
++        if (SIM_TRACE && packetType) simTraceInput(this.pid, this.client.opcode, NetworkPlayer.inBuf.data, this.client.waiting, (packetType as any).debugname ?? String(this.client.opcode));   // rs-sdk OFFLINE SIM: SIM_TRACE
+         if (packetType) {
+             const decoder = ClientGameProtRepository.getDecoder(packetType);
+ 

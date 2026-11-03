@@ -1,0 +1,1036 @@
+{
+ "provenance": {
+  "generatedBy": "headless/data/extract-spells.mjs",
+  "spellRows": "server/content/scripts/skill_combat/configs/magic/magic_combat_spells.dbrow",
+  "staffTable": "server/content/scripts/skill_magic/configs/magic_staff.dbrow",
+  "substitution": "skill_magic/scripts/magic.rs2:53-88 (staff_runes) — a waived rune count becomes null, so both the check (:34-45) and the delete (:98-106) skip it",
+  "flatXp": "skill_magic/scripts/magic.rs2:108-109 give_spell_xp = stat_advance(magic, experience), called from player_magic.rs2:157 BEFORE the hit roll at :79 — SPLASHES STILL PAY",
+  "damageXp": "skill_combat/scripts/combat.rs2:160-161 style_magic_normal = scale(200,100, damage*10) = 20 arg/damage, hit only",
+  "castDelay": "player_magic.rs2:176 %action_delay = map_clock + 5 — 5 ticks per combat cast, every spell",
+  "component": "engine/data/symbols/component.sym — the OPNPCT (181) spellCom argument",
+  "objIds": "server/content/pack/obj.pack"
+ },
+ "spells": [
+  {
+   "name": "wind_strike",
+   "component": 1152,
+   "level": 1,
+   "experience": 55,
+   "maxhit": 2,
+   "members": false,
+   "runes": [
+    {
+     "name": "mindrune",
+     "id": 558,
+     "count": 1
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 1
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "water_strike",
+   "component": 1154,
+   "level": 5,
+   "experience": 75,
+   "maxhit": 4,
+   "members": false,
+   "runes": [
+    {
+     "name": "mindrune",
+     "id": 558,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 1
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 1
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "earth_strike",
+   "component": 1156,
+   "level": 9,
+   "experience": 95,
+   "maxhit": 6,
+   "members": false,
+   "runes": [
+    {
+     "name": "mindrune",
+     "id": 558,
+     "count": 1
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 2
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 1
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "fire_strike",
+   "component": 1158,
+   "level": 13,
+   "experience": 115,
+   "maxhit": 8,
+   "members": false,
+   "runes": [
+    {
+     "name": "mindrune",
+     "id": 558,
+     "count": 1
+    },
+    {
+     "name": "firerune",
+     "id": 554,
+     "count": 3
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 2
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "wind_bolt",
+   "component": 1160,
+   "level": 17,
+   "experience": 135,
+   "maxhit": 9,
+   "members": false,
+   "runes": [
+    {
+     "name": "chaosrune",
+     "id": 562,
+     "count": 1
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 2
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "water_bolt",
+   "component": 1163,
+   "level": 23,
+   "experience": 165,
+   "maxhit": 10,
+   "members": false,
+   "runes": [
+    {
+     "name": "chaosrune",
+     "id": 562,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 2
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 2
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "earth_bolt",
+   "component": 1166,
+   "level": 29,
+   "experience": 195,
+   "maxhit": 11,
+   "members": false,
+   "runes": [
+    {
+     "name": "chaosrune",
+     "id": 562,
+     "count": 1
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 3
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 2
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "fire_bolt",
+   "component": 1169,
+   "level": 35,
+   "experience": 225,
+   "maxhit": 12,
+   "members": false,
+   "runes": [
+    {
+     "name": "chaosrune",
+     "id": 562,
+     "count": 1
+    },
+    {
+     "name": "firerune",
+     "id": 554,
+     "count": 4
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 3
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "wind_blast",
+   "component": 1172,
+   "level": 41,
+   "experience": 255,
+   "maxhit": 13,
+   "members": false,
+   "runes": [
+    {
+     "name": "deathrune",
+     "id": 560,
+     "count": 1
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 3
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "water_blast",
+   "component": 1175,
+   "level": 47,
+   "experience": 285,
+   "maxhit": 14,
+   "members": false,
+   "runes": [
+    {
+     "name": "deathrune",
+     "id": 560,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 3
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 3
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "earth_blast",
+   "component": 1177,
+   "level": 53,
+   "experience": 315,
+   "maxhit": 15,
+   "members": false,
+   "runes": [
+    {
+     "name": "deathrune",
+     "id": 560,
+     "count": 1
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 4
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 3
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "fire_blast",
+   "component": 1181,
+   "level": 59,
+   "experience": 345,
+   "maxhit": 16,
+   "members": false,
+   "runes": [
+    {
+     "name": "deathrune",
+     "id": 560,
+     "count": 1
+    },
+    {
+     "name": "firerune",
+     "id": 554,
+     "count": 5
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 4
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "wind_wave",
+   "component": 1183,
+   "level": 62,
+   "experience": 360,
+   "maxhit": 17,
+   "members": true,
+   "runes": [
+    {
+     "name": "bloodrune",
+     "id": 565,
+     "count": 1
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 5
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "water_wave",
+   "component": 1185,
+   "level": 65,
+   "experience": 375,
+   "maxhit": 18,
+   "members": true,
+   "runes": [
+    {
+     "name": "bloodrune",
+     "id": 565,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 7
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 5
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "earth_wave",
+   "component": 1188,
+   "level": 70,
+   "experience": 400,
+   "maxhit": 19,
+   "members": true,
+   "runes": [
+    {
+     "name": "bloodrune",
+     "id": 565,
+     "count": 1
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 7
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 5
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "fire_wave",
+   "component": 1189,
+   "level": 75,
+   "experience": 425,
+   "maxhit": 20,
+   "members": true,
+   "runes": [
+    {
+     "name": "bloodrune",
+     "id": 565,
+     "count": 1
+    },
+    {
+     "name": "firerune",
+     "id": 554,
+     "count": 7
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 5
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": true
+  },
+  {
+   "name": "bind",
+   "component": 1572,
+   "level": 20,
+   "experience": 300,
+   "maxhit": null,
+   "members": false,
+   "runes": [
+    {
+     "name": "naturerune",
+     "id": 561,
+     "count": 2
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 3
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 3
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": true,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "snare",
+   "component": 1582,
+   "level": 50,
+   "experience": 600,
+   "maxhit": 2,
+   "members": true,
+   "runes": [
+    {
+     "name": "naturerune",
+     "id": 561,
+     "count": 3
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 4
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 4
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": true,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "entangle",
+   "component": 1592,
+   "level": 79,
+   "experience": 890,
+   "maxhit": 5,
+   "members": true,
+   "runes": [
+    {
+     "name": "naturerune",
+     "id": 561,
+     "count": 4
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 5
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 5
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": true,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "confuse",
+   "component": 1153,
+   "level": 3,
+   "experience": 130,
+   "maxhit": null,
+   "members": false,
+   "runes": [
+    {
+     "name": "bodyrune",
+     "id": 559,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 3
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 2
+    }
+   ],
+   "wornRequired": null,
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "weaken",
+   "component": 1157,
+   "level": 11,
+   "experience": 210,
+   "maxhit": null,
+   "members": false,
+   "runes": [
+    {
+     "name": "bodyrune",
+     "id": 559,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 3
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 2
+    }
+   ],
+   "wornRequired": null,
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "curse",
+   "component": 1161,
+   "level": 19,
+   "experience": 290,
+   "maxhit": null,
+   "members": false,
+   "runes": [
+    {
+     "name": "bodyrune",
+     "id": 559,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 2
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 3
+    }
+   ],
+   "wornRequired": null,
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "vulnerability",
+   "component": 1542,
+   "level": 66,
+   "experience": 760,
+   "maxhit": null,
+   "members": true,
+   "runes": [
+    {
+     "name": "soulrune",
+     "id": 566,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 5
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 5
+    }
+   ],
+   "wornRequired": null,
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "enfeeble",
+   "component": 1543,
+   "level": 73,
+   "experience": 830,
+   "maxhit": null,
+   "members": true,
+   "runes": [
+    {
+     "name": "soulrune",
+     "id": 566,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 8
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 8
+    }
+   ],
+   "wornRequired": null,
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "stun",
+   "component": 1562,
+   "level": 80,
+   "experience": 900,
+   "maxhit": null,
+   "members": true,
+   "runes": [
+    {
+     "name": "soulrune",
+     "id": 566,
+     "count": 1
+    },
+    {
+     "name": "waterrune",
+     "id": 555,
+     "count": 12
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 12
+    }
+   ],
+   "wornRequired": null,
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "crumble_undead",
+   "component": 1171,
+   "level": 39,
+   "experience": 245,
+   "maxhit": 15,
+   "members": false,
+   "runes": [
+    {
+     "name": "chaosrune",
+     "id": 562,
+     "count": 1
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 2
+    },
+    {
+     "name": "earthrune",
+     "id": 557,
+     "count": 2
+    }
+   ],
+   "wornRequired": null,
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": true,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "saradomin_strike",
+   "component": 1190,
+   "level": 60,
+   "experience": 350,
+   "maxhit": 20,
+   "members": true,
+   "runes": [
+    {
+     "name": "firerune",
+     "id": 554,
+     "count": 2
+    },
+    {
+     "name": "bloodrune",
+     "id": 565,
+     "count": 2
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 4
+    }
+   ],
+   "wornRequired": "saradomin_staff",
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "claws_of_guthix",
+   "component": 1191,
+   "level": 60,
+   "experience": 350,
+   "maxhit": 20,
+   "members": true,
+   "runes": [
+    {
+     "name": "firerune",
+     "id": 554,
+     "count": 1
+    },
+    {
+     "name": "bloodrune",
+     "id": 565,
+     "count": 2
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 4
+    }
+   ],
+   "wornRequired": "guthix_staff",
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "flames_of_zamorak",
+   "component": 1192,
+   "level": 60,
+   "experience": 350,
+   "maxhit": 20,
+   "members": true,
+   "runes": [
+    {
+     "name": "firerune",
+     "id": 554,
+     "count": 4
+    },
+    {
+     "name": "bloodrune",
+     "id": 565,
+     "count": 2
+    },
+    {
+     "name": "airrune",
+     "id": 556,
+     "count": 1
+    }
+   ],
+   "wornRequired": "zamorak_staff",
+   "statChange": true,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  },
+  {
+   "name": "iban_blast",
+   "component": 1539,
+   "level": 50,
+   "experience": 300,
+   "maxhit": 25,
+   "members": true,
+   "runes": [
+    {
+     "name": "firerune",
+     "id": 554,
+     "count": 5
+    },
+    {
+     "name": "deathrune",
+     "id": 560,
+     "count": 1
+    }
+   ],
+   "wornRequired": "ibanstaff",
+   "statChange": false,
+   "freeze": false,
+   "undeadOnly": false,
+   "chargeGated": false,
+   "autocastable": false
+  }
+ ],
+ "staves": [
+  {
+   "name": "staff_of_air",
+   "id": 1381,
+   "waives": [
+    "airrune"
+   ]
+  },
+  {
+   "name": "air_battlestaff",
+   "id": 1397,
+   "waives": [
+    "airrune"
+   ]
+  },
+  {
+   "name": "mystic_air_staff",
+   "id": 1405,
+   "waives": [
+    "airrune"
+   ]
+  },
+  {
+   "name": "staff_of_water",
+   "id": 1383,
+   "waives": [
+    "waterrune"
+   ]
+  },
+  {
+   "name": "water_battlestaff",
+   "id": 1395,
+   "waives": [
+    "waterrune"
+   ]
+  },
+  {
+   "name": "mystic_water_staff",
+   "id": 1403,
+   "waives": [
+    "waterrune"
+   ]
+  },
+  {
+   "name": "staff_of_earth",
+   "id": 1385,
+   "waives": [
+    "earthrune"
+   ]
+  },
+  {
+   "name": "earth_battlestaff",
+   "id": 1399,
+   "waives": [
+    "earthrune"
+   ]
+  },
+  {
+   "name": "mystic_earth_staff",
+   "id": 1407,
+   "waives": [
+    "earthrune"
+   ]
+  },
+  {
+   "name": "lava_battlestaff",
+   "id": 3053,
+   "waives": [
+    "earthrune",
+    "firerune"
+   ]
+  },
+  {
+   "name": "mystic_lava_staff",
+   "id": 3054,
+   "waives": [
+    "earthrune",
+    "firerune"
+   ]
+  },
+  {
+   "name": "staff_of_fire",
+   "id": 1387,
+   "waives": [
+    "firerune"
+   ]
+  },
+  {
+   "name": "fire_battlestaff",
+   "id": 1393,
+   "waives": [
+    "firerune"
+   ]
+  },
+  {
+   "name": "mystic_fire_staff",
+   "id": 1401,
+   "waives": [
+    "firerune"
+   ]
+  }
+ ],
+ "runeIds": {
+  "airrune": 556,
+  "bloodrune": 565,
+  "bodyrune": 559,
+  "chaosrune": 562,
+  "deathrune": 560,
+  "earthrune": 557,
+  "firerune": 554,
+  "mindrune": 558,
+  "naturerune": 561,
+  "soulrune": 566,
+  "waterrune": 555
+ },
+ "warnings": []
+}

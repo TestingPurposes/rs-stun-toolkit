@@ -1,0 +1,440 @@
+diff --git a/server/engine/src/engine/World.ts b/server/engine/src/engine/World.ts
+index 4cc1b0b4c92430a823afad2ba4ca5bdbad90b94a..210ab1510a88fc9325188fb258cd17d1e1cf8d05 100644
+--- a/server/engine/src/engine/World.ts
++++ b/server/engine/src/engine/World.ts
+@@ -95,6 +95,13 @@ import {
+     trackSessionEventsPublished
+ } from '#/server/Metrics.js';
+ import Environment from '#/util/Environment.js';
++import JavaRandom from '#/util/JavaRandom.js';
++import { simSeed, simSeedAnchor, simReseed, simRandDraws } from '#/simseed.js';
++import { simDoorsInit, simDoorsTick } from '#/simdoors.js';   // rs-sdk OFFLINE SIM: SIM_DOORS / SIM_DOORS_FLIP
++import { simDropTick, simDropRefusing } from '#/simdrop.js';   // rs-sdk OFFLINE SIM: SIM_DROP (mass socket drops)
++import { simNetHold } from '#/simnet.js';   // rs-sdk OFFLINE SIM: SIM_NET_LATE (late input / jitter)
++import { simCrowdIs, simCrowdPhantom, simCrowdTick } from '#/simcrowd.js';   // rs-sdk OFFLINE SIM: SIM_CROWD / SIM_COMPETE (other players)
++import { SIM_PROF, profStart, profMark, profEnd, profWaitDone, profIdle, SIM_TRACE, simTraceTick, simTraceFlush } from '#/simprof.js';   // rs-sdk OFFLINE SIM perf: SIM_PROF tick breakdown
+ import { fromBase37, toBase37, toSafeName } from '#/util/JString.js';
+ import LinkList from '#/datastruct/LinkList.js';
+ import { printDebug, printError, printInfo } from '#/util/Logger.js';
+@@ -114,6 +121,23 @@ type LogoutRequest = {
+     lastAttempt: number;
+ };
+ 
++const SIM_LOCKSTEP = process.env.SIM_LOCKSTEP === '1';
++const SIM_ACK_MS = Number(process.env.SIM_ACK_MS ?? 200);
++const SIM_LOGIN_MS = Number(process.env.SIM_LOGIN_MS ?? 300);
++const SIM_IDLE_MS = Number(process.env.SIM_IDLE_MS ?? 100);
++// rs-sdk OFFLINE SIM (benchmark/replay aid, default off): SIM_IDLE_HOLD=1 runs no tick while no player is connected unless a
++// socket read arrived since the last tick (handshake bytes) or a login/logout is in flight, so the world is in the same state
++// at the first login however long the client took to start (with SIM_LOGIN_MS=5000 and SIM_SEED_ANCHOR: replayable runs)
++const SIM_IDLE_HOLD = process.env.SIM_IDLE_HOLD === '1';
++const SIM_ACK_WAKE = process.env.SIM_ACK_WAKE !== '0';   // rs-sdk OFFLINE SIM perf: event-driven ack wake (simAwaitAcks)
++const SIM_TRACE_ENGINE = process.env.SIM_LOCKSTEP === '1' ? Number(process.env.SIM_TRACE_ENGINE ?? 0) : 0;   // sim fusion 3
++// rs-sdk OFFLINE SIM (sim fusion 3): SIM_DET=1 = reproducible-seed mode. (1) the world does not tick until the first client
++// connects (the runner's ~10 s pathfinder init used to idle-tick a load-dependent 60-110 ticks before any login); (2) the
++// logins of one tick are processed in name order with no wall-clock budget (only the 10-per-tick cap). Use with a large
++// SIM_ACK_MS / SIM_LOGIN_MS so a tick never runs on a deadline, and the runner's SIM_DET login gate (core.ts).
++const SIM_DET = process.env.SIM_LOCKSTEP === '1' && process.env.SIM_DET === '1';
++const SIM_ACK_POLL_MS = Number(process.env.SIM_ACK_POLL_MS ?? 5);
++
+ class World {
+     private loginThread = new Worker(new URL('../server/login/LoginThread.ts', import.meta.url));
+     private friendThread = new Worker(new URL('../server/friend/FriendThread.ts', import.meta.url));
+@@ -138,7 +162,7 @@ class World {
+     private static readonly PLAYER_TELEMETRY_MINRUN: number = 3; // min straight-run tiles before a turn counts as a corner (not combat wiggle)
+ 
+     // concurrent players allowed per source IP. A 1100-account swarm from two IPs OOM'd
+-    // the 4GB prod box on 2026-07-21; the engine otherwise accepts up to 2048 players.
++    // the 4GB prod box ; the engine otherwise accepts up to 2048 players.
+     private static readonly PLAYER_MAX_PER_IP: number = Number(process.env.MAX_PLAYERS_PER_IP ?? 200);
+ 
+     private static readonly PLAYER_SLOT_AUDITRATE: number = 100; // 30s at 300ms ticks
+@@ -185,6 +209,10 @@ class World {
+     readonly tickHistory: Uint16Array = new Uint16Array(World.TICK_HISTORY * 13); // 12 stats + interval
+     tickHistoryCount: number = 0;
+     lastCycleStart: number = 0;
++    // rs-sdk perf (diagnostic only, reads the clock and nothing else): sub-ms wall time of the cycle parts WorldStat does not
++    // time, same 300-tick window, reported as /tickstats "untimed" (ms avg / peak)
++    static readonly UNTIMED_NAMES = ['simHooks', 'npcEvents', 'audit', 'info', 'worldFeed', 'post'] as const;
++    readonly untimedHistory: Float32Array = new Float32Array(World.TICK_HISTORY * World.UNTIMED_NAMES.length);
+ 
+     tickRate: number = World.TICKRATE; // speeds up when we're processing server shutdown
+     currentTick: number = 0; // the current tick of the game world.
+@@ -345,6 +373,7 @@ class World {
+ 
+         if (!skipMaps) {
+             this.gameMap.init();
++            simDoorsInit(this);
+         }
+ 
+         setTimeout(() => {
+@@ -381,9 +410,123 @@ class World {
+ 
+     // ----
+ 
++    // rs-sdk OFFLINE SIM (SIM_LOCKSTEP=1, local sim instance only): no wall clock. The next cycle runs as soon as every
++    // connected client has sent something after this tick went out (sim bots send a NO_TIMEOUT once they have acted on
++    // the tick), or after SIM_ACK_MS. Same scripts, same order of operations, ticks as fast as the bots answer.
++    private simTickSentAt = 0;
++    private simLate = 0;
++    private simLateReported = -1;
++    private readonly simLateBy = new Map<string, number>();
++    // rs-sdk OFFLINE SIM perf (SIM_ACK_WAKE, default on): while the tick waits for acks, re-check on the next socket read
++    // (ClientSocket.buffer -> ClientSocket.simOnRecv, via setImmediate so the whole I/O batch is buffered first) instead of
++    // a setTimeout(0) chain, which bun clamps to ~1.1 ms per hop (measured). Same predicate, same order of operations; the
++    // cycle just starts up to ~1 ms sooner. A SIM_ACK_POLL_MS (5) fallback poll still catches state changes that are not
++    // socket reads (a socket closing, a login thread reply) and the SIM_ACK_MS deadline. SIM_ACK_WAKE=0 = the old loop.
++    private simGen = 0;
++    private simWake: (() => void) | null = null;
++    private simEverClient = false;   // sim fusion 3 (SIM_DET): no ticks before the first client
++    private simAwaitAcks(): void {
++        this.simTickSentAt = Date.now();
++        let deadline = this.simTickSentAt + SIM_ACK_MS;
++        const gen = ++this.simGen;
++        let queued = false;
++        let timer: ReturnType<typeof setTimeout> | null = null;
++        if (SIM_ACK_WAKE && ClientSocket.simOnRecv === null) ClientSocket.simOnRecv = () => this.simWake?.();
++        if (SIM_PROF) ClientSocket.simProf = true;
++        const wake = () => { if (!queued) { queued = true; setImmediate(poll); } };
++        const arm = () => { if (timer === null) timer = setTimeout(() => { timer = null; poll(); }, Math.max(0, Math.min(SIM_ACK_POLL_MS, deadline - Date.now()))); };
++        const poll = () => {
++            queued = false;
++            if (gen !== this.simGen) return;   // a wake/timer left over from an earlier tick
++            let waiting = false, slow = '', clients = 0, lastAck = 0;
++            for (const player of this.players) {
++                if (!player) continue;
++                const client = (player as any).client as { lastRecvAt?: number; constructor: { name: string } } | undefined;
++                if (!client || client.constructor.name === 'NullClientSocket') continue;
++                clients++;
++                if ((client.lastRecvAt ?? 0) < this.simTickSentAt) { waiting = true; slow = player.username; break; }
++                if (SIM_PROF) lastAck = Math.max(lastAck, (client as any).lastRecvPerf ?? 0);
++            }
++            if (waiting && Date.now() >= deadline) {
++                // a tick that ran without some client's ack: that client acts a tick late from here on (fidelity loss).
++                // Counted and reported every 500 ticks so a lane that overloads its bot process shows up in the engine log.
++                this.simLate++; this.simLateBy.set(slow, (this.simLateBy.get(slow) ?? 0) + 1);
++            }
++            if (this.currentTick % 500 === 0 && this.simLateReported !== this.currentTick) {
++                this.simLateReported = this.currentTick;
++                if (this.simLate) console.log(`[sim] tick ${this.currentTick}: ${this.simLate}/500 ticks ran on the ${SIM_ACK_MS} ms deadline without an ack (${[...this.simLateBy].sort((x, y) => y[1] - x[1]).slice(0, 4).map(([u, n]) => `${u} ${n}`).join(', ')})`);
++                this.simLate = 0; this.simLateBy.clear();
++            }
++            // logins/logouts run on the login thread in wall-clock time: hold the tick while one is in flight (up to
++            // SIM_LOGIN_MS, default one demo tick), so a login costs the ticks it would on a 300 ms server, not the
++            // 5-10 sim ticks that elapse while the thread works
++            const io = this.loginRequests.size > 0 || this.logoutRequests.size > 0;
++            // nobody connected: tick at SIM_IDLE_MS (100) instead of spinning a whole core per idle sim engine
++            // sim fusion 3: a login the login thread already answered waits in newPlayers for the next cycle; it ends the
++            // SIM_DET freeze too (a fast reply between two 5 ms polls left io unseen and froze the world for good: DRa4)
++            const pendingNew = SIM_DET && this.newPlayers.size > 0;
++            if ((clients || io || pendingNew) && !this.simEverClient) {
++                this.simEverClient = true;
++                // SIM_DET: the boot tick 'went out' long ago (the runner's init); restart the wait clock now, or the io hold below
++                // is already expired and tick 1 runs with the first login half done (pairs DRa1/DRb1, DRa2/DRb2 parted at tick 1)
++                if (SIM_DET) { this.simTickSentAt = Date.now(); deadline = this.simTickSentAt + SIM_ACK_MS; }
++            }
++            if (SIM_PROF && !clients) profIdle(this.currentTick);
++            if (!clients && !io && !pendingNew && (Date.now() < this.simTickSentAt + SIM_IDLE_MS || (SIM_DET && !this.simEverClient && this.shutdownTick === -1))) { setTimeout(poll, 5); return; }   // a stop (SIGTERM -> rebootTimer) still ticks: the shutdown runs in a cycle
++            if (SIM_IDLE_HOLD && !clients && !io && !pendingNew && !this.shutdown && ClientSocket.simAnyRecvAt < this.simTickSentAt) { setTimeout(poll, 1); return; }
++            if ((!waiting && !io) || Date.now() >= (io ? Math.max(deadline, this.simTickSentAt + SIM_LOGIN_MS) : deadline)) {
++                this.simWake = null;
++                if (timer !== null) { clearTimeout(timer); timer = null; }
++                this.simGen++;   // retire this tick's poll before the cycle (which starts the next one)
++                if (SIM_PROF) profWaitDone(lastAck, clients, io, waiting, this.currentTick);
++                this.nextTick = Date.now(); this.cycle(); return;
++            }
++            if (!SIM_ACK_WAKE || io) { setTimeout(poll, 0); return; }   // login/logout in flight: login thread replies are not socket reads
++            this.simWake = wake;
++            arm();
++        };
++        setImmediate(poll);
++    }
++
++    // rs-sdk OFFLINE SIM: SIM_SEED, ticks are counted from the last login whose name matches SIM_SEED_ANCHOR (simseed.ts)
++    simAnchorTick = 0;
++
++    // rs-sdk OFFLINE SIM (sim fusion 3, determinism bisect): SIM_TRACE_ENGINE=1 logs one line per tick with a hash of every
++    // player's and npc's tile, the counts and the Math.random draws of the previous tick; =2 also lists the players. Two
++    // same-seed lanes' engine logs diffed line by line (by n = ticks since the anchor) show the first tick the worlds part.
++    private simTraceDraws = 0;
++    private simTrace(): void {
++        const mode = SIM_TRACE_ENGINE;
++        let ph = 0, nh = 0, np = 0, nn = 0;
++        const list: string[] = [];
++        for (const p of this.players) {
++            if (!p) continue;
++            np++;
++            ph = (Math.imul(ph ^ ((p.x << 16) | (p.z << 2) | p.level), 0x9e3779b1) + p.slot) >>> 0;
++            if (mode >= 2 && !simCrowdIs(p)) list.push(`${p.slot}:${p.x},${p.z}`);
++        }
++        for (const n of this.npcs) {
++            if (!n) continue;
++            nn++;
++            nh = (Math.imul(nh ^ ((n.x << 16) | (n.z << 2) | n.level), 0x85ebca6b) + n.nid) >>> 0;
++        }
++        const d = simRandDraws - this.simTraceDraws; this.simTraceDraws = simRandDraws;
++        console.log(`[trace] n=${this.currentTick - this.simAnchorTick} t=${this.currentTick} ph=${ph.toString(16)} nh=${nh.toString(16)} np=${np} nn=${nn} r=${d} li=${this.loginRequests.size}/${this.logoutRequests.size}${mode >= 2 ? ' P ' + list.join(' ') : ''}`);
++    }
++
+     cycle(): void {
+         try {
+             const start: number = Date.now();
++            const ut = this.untimedHistory, ur = (this.tickHistoryCount % World.TICK_HISTORY) * World.UNTIMED_NAMES.length;   // rs-sdk perf
++            let um = performance.now();
++            if (SIM_PROF) profStart();
++            if (SIM_TRACE_ENGINE && simSeed !== null) this.simTrace();   // sim fusion 3: before this tick's reseed
++            if (simSeed !== null) JavaRandom.setSeed(simReseed(this.currentTick - this.simAnchorTick));
++            simDoorsTick(this);
++            simDropTick(this);
++            simCrowdTick(this);
++            ut[ur] = performance.now() - um;
++            if (SIM_PROF) profMark(0);
+             // rs-sdk: cap catch-up at 2 ticks of backlog. Sustained overload (many bots)
+             // otherwise makes the world sprint at max speed until the full backlog replays.
+             this.nextTick = Math.max(this.nextTick, start - this.tickRate * 2);
+@@ -393,6 +536,7 @@ class World {
+             // - world queue
+             // - npc hunt
+             this.processWorld();
++            if (SIM_PROF) profMark(1);
+ 
+             // client input
+             // - calculate afk event readiness
+@@ -400,9 +544,13 @@ class World {
+             // - process pathfinding/following request
+             // - client input tracking
+             this.processClientsIn();
++            if (SIM_PROF) profMark(2);
+ 
+             // Spawn triggers, despawn triggers
++            um = performance.now();
+             this.processNpcEventQueue();
++            if (SIM_PROF) profMark(3);
++            ut[ur + 1] = performance.now() - um;
+ 
+             // npc processing (if npc is not busy)
+             // - resume suspended script
+@@ -412,6 +560,7 @@ class World {
+             // - movement
+             // - modes
+             this.processNpcs();
++            if (SIM_PROF) profMark(4);
+ 
+             // player processing
+             // - primary queue
+@@ -423,28 +572,38 @@ class World {
+             // - movement
+             // - close interface if attempting to logout
+             this.processPlayers();
++            if (SIM_PROF) profMark(5);
+ 
+             // player logout
+             this.processLogouts();
++            if (SIM_PROF) profMark(6);
+ 
+             // reclaim slots held by players the player loop can no longer see
++            um = performance.now();
+             this.auditPlayerSlots();
++            if (SIM_PROF) profMark(7);
++            ut[ur + 2] = performance.now() - um;
+ 
+             // player login, good spot for it (before packets so they immediately load but after processing so nothing hits them)
+             this.processLogins();
++            if (SIM_PROF) profMark(8);
+ 
+             // process zones
+             // - build list of active zones around players
+             // - loc/obj despawn/respawn
+             // - compute shared buffer
+             this.processZones();
++            if (SIM_PROF) profMark(9);
+ 
+             // process player & npc update info
+             // - convert player movements
+             // - compute player info
+             // - convert npc movements
+             // - compute npc info
++            um = performance.now();
+             this.processInfo();
++            if (SIM_PROF) profMark(10);
++            ut[ur + 3] = performance.now() - um;
+ 
+             // client output
+             // - map update
+@@ -456,9 +615,13 @@ class World {
+             // - afk zones changes
+             // - flush packets
+             this.processClientsOut();
++            if (SIM_PROF) profMark(11);
+ 
+             // rs-sdk: live world feed for spectator viewers (reads the info masks before cleanup)
++            um = performance.now();
+             cycleWorldFeed();
++            if (SIM_PROF) profMark(12);
++            ut[ur + 4] = performance.now() - um;
+ 
+             // cleanup
+             // - reset zones
+@@ -466,6 +629,8 @@ class World {
+             // - reset npcs
+             // - reset invs
+             this.processCleanup();
++            if (SIM_PROF) profMark(13);
++            um = performance.now();
+ 
+             // ----
+ 
+@@ -482,6 +647,7 @@ class World {
+ 
+             if (tick % World.PLAYER_COORDLOGRATE === 0 && tick > 0) {
+                 for (const player of this.playerLoop.all()) {
++                    if (simCrowdIs(player)) continue;   // rs-sdk OFFLINE SIM: no logs for fake crowd players
+                     player.addSessionLog(LoggerEventType.MODERATOR, 'Server check in');
+                 }
+             }
+@@ -489,12 +655,14 @@ class World {
+             // corner/teleport detection needs per-tick position deltas so straight-line
+             // interpolation between samples is exact rather than clipping through walls
+             for (const player of this.playerLoop.all()) {
++                if (simCrowdIs(player)) continue;   // rs-sdk OFFLINE SIM
+                 this.trackTelemetryMovement(player);
+             }
+ 
+             if (tick % World.PLAYER_TELEMETRYRATE === 0 && tick > 0) {
+                 const heartbeat: boolean = tick % (World.PLAYER_TELEMETRYRATE * World.PLAYER_TELEMETRY_HEARTBEAT) === 0;
+                 for (const player of this.playerLoop.all()) {
++                    if (simCrowdIs(player)) continue;   // rs-sdk OFFLINE SIM
+                     player.telemetryTurnBudget = World.PLAYER_TELEMETRY_TURNBUDGET;
+                     if (heartbeat || player.x !== player.lastTelemetryX || player.z !== player.lastTelemetryZ || player.level !== player.lastTelemetryLevel) {
+                         this.pendingTelemetry.push(this.buildTelemetryEvent(player));
+@@ -535,6 +703,8 @@ class World {
+                 this.wealthTransactions = [];
+             }
+ 
++            ut[ur + 5] = performance.now() - um;   // rs-sdk perf: shutdown/saves/telemetry/log posting
++            if (SIM_PROF) profMark(14);
+             this.cycleStats[WorldStat.CYCLE] = Date.now() - start; // set the main logic stat here, before telemetry.
+ 
+             this.lastCycleStats[WorldStat.CYCLE] = this.cycleStats[WorldStat.CYCLE];
+@@ -590,6 +760,7 @@ class World {
+ 
+             // ----
+ 
++            if (SIM_LOCKSTEP) { if (SIM_TRACE) { simTraceTick(this); if (!this.getTotalPlayers()) simTraceFlush(); } if (SIM_PROF) profEnd(); this.simAwaitAcks(); } else
+             setTimeout(this.cycle.bind(this), Math.max(0, this.tickRate - (Date.now() - start) - drift));
+         } catch (err) {
+             if (err instanceof Error) {
+@@ -698,7 +869,7 @@ class World {
+                 // - client input tracking
+                 player.processInputTracking();
+ 
+-                if (isClientConnected(player) && player.decodeIn()) {
++                if (isClientConnected(player) && !simNetHold(player, this.currentTick) && player.decodeIn()) {
+                     if (player.userPath.length > 0 || player.opcalled) {
+                         if (player.delayed) {
+                             player.unsetMapFlag();
+@@ -830,6 +1001,8 @@ class World {
+         let removed = 0;
+ 
+         for (const player of this.playerLoop.all()) {
++            // rs-sdk OFFLINE SIM: a fake crowd player never logs out (no socket to time out); only a shutdown removes it
++            if (!this.shutdown && simCrowdIs(player)) continue;
+             let force = false;
+             if (this.shutdown || this.currentTick - player.lastResponse >= World.TIMEOUT_NO_RESPONSE) {
+                 // world shutdown or x-logged / timed out for 60s: force logout
+@@ -924,13 +1097,17 @@ class World {
+             }
+         }
+ 
+-        player: for (const queuedPlayer of this.newPlayers) {
+-            if (processed >= 10 || (processed > 0 && performance.now() - started >= budgetMs)) break;
++        // sim fusion 3 (SIM_DET): this tick's logins in name order (the Set is in login-thread reply order = wall clock)
++        const queue: Iterable<Player> = SIM_DET ? [...this.newPlayers].sort((x, y) => (x.username < y.username ? -1 : x.username > y.username ? 1 : 0)) : this.newPlayers;
++        player: for (const queuedPlayer of queue) {
++            if (processed >= 10 || (!SIM_DET && processed > 0 && performance.now() - started >= budgetMs)) break;
+             this.newPlayers.delete(queuedPlayer);
+             processed++;
+             let player = queuedPlayer;
+             if (player instanceof NetworkPlayer && (!isClientConnected(player) || player.client.state < 0)) continue;
+             let transferred = false;
++            // rs-sdk OFFLINE SIM (SIM_DROP_DOWN): the simulated restart refuses logins (14 = server being updated)
++            if (simDropRefusing(this)) { if (isClientConnected(player)) { player.client.send(Uint8Array.from([14])); player.client.close(); } continue; }
+             // prevent logging in if a player save is being flushed
+             if (this.logoutRequests.has(player.username)) {
+                 player.addSessionLog(LoggerEventType.ENGINE, 'Tried to log in - old session is mid-logout');
+@@ -1438,6 +1615,7 @@ class World {
+ 
+         const saves = this.checkpointPlayers();
+         for (const player of this.playerLoop.all()) {
++            if (simCrowdIs(player)) continue;   // rs-sdk OFFLINE SIM: fake crowd players are never saved
+             this.loginThread.postMessage({
+                 type: 'player_autosave',
+                 username: player.username,
+@@ -1454,6 +1632,7 @@ class World {
+         const saves = new Map<string, Uint8Array>();
+         for (const [owner, request] of this.logoutRequests) saves.set(owner, request.save);
+         for (const player of this.playerLoop.all()) {
++            if (simCrowdIs(player)) continue;   // rs-sdk OFFLINE SIM: fake crowd players are never saved
+             saves.set(player.username, player === extra && extraSave ? extraSave : player.save(false));
+         }
+         if (extra) saves.set(extra.username, extraSave ?? extra.save(false));
+@@ -1831,7 +2010,7 @@ class World {
+             return;
+         }
+ 
+-        console.warn(`[LOGOUT DEBUG] Server removePlayer() called for ${player.username}`);
++        if (!simCrowdIs(player)) console.warn(`[LOGOUT DEBUG] Server removePlayer() called for ${player.username}`);   // rs-sdk OFFLINE SIM: no line per crowd despawn
+         if (isClientConnected(player)) {
+             player.logout();
+             player.client.close();
+@@ -1847,6 +2026,9 @@ class World {
+ 
+         player.isActive = false;
+ 
++        // rs-sdk OFFLINE SIM: a fake crowd player has no save and was never announced to the login/friend servers
++        if (simCrowdIs(player)) return;
++
+         player.addSessionLog(LoggerEventType.MODERATOR, 'Logged out');
+         this.flushPlayer(player);
+ 
+@@ -2001,6 +2183,14 @@ class World {
+         for (let j = 0; j < 12; j++) {
+             last[names[j]] = this.lastCycleStats[j];
+         }
++        // rs-sdk perf: the untimed cycle parts (same window)
++        const un = World.UNTIMED_NAMES.length;
++        const untimed: Record<string, { avg: number; peak: number }> = {};
++        for (let j = 0; j < un; j++) {
++            let s = 0, m = 0;
++            for (let i = 0; i < n; i++) { const v = this.untimedHistory[i * un + j]; s += v; if (v > m) m = v; }
++            untimed[World.UNTIMED_NAMES[j]] = { avg: n ? Math.round((s / n) * 100) / 100 : 0, peak: Math.round(m * 100) / 100 };
++        }
+         return {
+             tick: this.currentTick,
+             tickRate: this.tickRate,
+@@ -2013,6 +2203,7 @@ class World {
+             avg,
+             peak,
+             last,
++            untimed,
+             heapMB: Math.trunc(process.memoryUsage().heapTotal / 1024 / 1024),
+             rssMB: Math.trunc(process.memoryUsage().rss / 1024 / 1024)
+         };
+@@ -2060,7 +2251,8 @@ class World {
+ 
+     scaleByPlayerCount(rate: number): number {
+         // not sure if it caps at 2k player count or not
+-        const playerCount = Math.min(this.getTotalPlayers(), 2000);
++        // rs-sdk OFFLINE SIM: SIM_CROWD_PHANTOM counts a proximity-despawned crowd as present (simcrowd.ts; 0 otherwise)
++        const playerCount = Math.min(this.getTotalPlayers() + simCrowdPhantom(), 2000);
+         return (((4000 - playerCount) * rate) / 4000) | 0; // assuming scale works the same way as the runescript one
+     }
+ 
+@@ -2308,6 +2500,7 @@ class World {
+                 }
+ 
+                 this.newPlayers.add(player);
++                if (simSeed !== null && simSeedAnchor.test(username)) this.simAnchorTick = this.currentTick + 1;   // rs-sdk OFFLINE SIM
+                 client.state = 1;
+             } catch (err) {
+                 if (err instanceof Error) {

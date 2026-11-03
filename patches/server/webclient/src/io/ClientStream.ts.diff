@@ -1,0 +1,300 @@
+diff --git a/server/webclient/src/io/ClientStream.ts b/server/webclient/src/io/ClientStream.ts
+index ab5a827ad4f887e7eed25d6c6ec3604628ada3c1..a5d464fab05153b6f889fe368ef4f3e3ea78db11 100644
+--- a/server/webclient/src/io/ClientStream.ts
++++ b/server/webclient/src/io/ClientStream.ts
+@@ -6,25 +6,54 @@ export default class ClientStream {
+     private dummy: boolean = false;
+     private remoteClosed: boolean = false;
+ 
+-    static async openSocket(host: string, secured: boolean): Promise<WebSocket> {
++    // Why this stream died. The read/write paths still REJECT WITH THE RAW WebSocket — Client.ts
++    // type-tests it (`e instanceof WebSocket && e.readyState === 3`) to tell an IO error from a logic
++    // error — so the reason is recorded ALONGSIDE the rejection, never in place of it. Without this
++    // every headless drop logged as the string "[object WebSocket]" and a server kick was
++    // indistinguishable from our own decoder throwing.
++    dropReason: string | null = null;
++
++    // timeoutMs = 0 preserves the browser client's behaviour exactly (it has no connect deadline).
++    // The headless client passes one: against an endpoint that accepts the TCP connection and never answers the
++    // HTTP upgrade, the socket fires NEITHER 'open' NOR 'error', so this promise settles NEVER — and a caller
++    // that awaits it holds its concurrency slot forever.
++    static async openSocket(host: string, secured: boolean, timeoutMs: number = 0): Promise<WebSocket> {
+         return await new Promise<WebSocket>((resolve, reject): void => {
+             const protocol: string = secured ? 'wss' : 'ws';
+             const ws: WebSocket = new WebSocket(`${protocol}://${host}`, 'binary');
+ 
++            let timer: ReturnType<typeof setTimeout> | null = null;
++            if (timeoutMs > 0) {
++                timer = setTimeout((): void => {
++                    ws.close(); // never leak the half-open socket
++                    reject(new Error(`ws connect to ${host} timed out after ${timeoutMs}ms`));
++                }, timeoutMs);
++            }
++
+             ws.addEventListener('open', (): void => {
++                if (timer) clearTimeout(timer);
+                 resolve(ws);
+             });
+ 
+             ws.addEventListener('error', (): void => {
++                if (timer) clearTimeout(timer);
+                 reject(ws);
+             });
+         });
+     }
+ 
+-    constructor(socket: WebSocket) {
++    // `opts` is ADDITIVE and optional: omitting it reproduces the browser client's behaviour exactly.
++    // perReadTimer=false suppresses the per-read 30s setTimeout (2 timer ops per buffer-dry wait, i.e.
++    // ~2 per tick per bot with many bots in one process) — the caller then OWNS the deadline and must fail the stream
++    // itself via pendingReadSince/expirePendingRead (headless does this from ONE process-level
++    // watchdog; see leanclient.ts). Never pass false without wiring that watchdog: a half-open socket
++    // would otherwise wait forever.
++    constructor(socket: WebSocket, opts?: { perReadTimer?: boolean }) {
+         socket.onclose = this.onclose;
+         socket.onerror = this.onerror;
+-        this.wsin = new WebSocketReader(socket, 30000);
++        this.wsin = new WebSocketReader(socket, 30000, (): void => {
++            this.dropReason ??= 'read timeout 30s (half-open socket)';
++        }, opts?.perReadTimer !== false);
+         this.wsout = new WebSocketWriter(socket, 5000);
+         this.socket = socket;
+     }
+@@ -94,6 +123,61 @@ export default class ClientStream {
+         await this.wsin.readBytes(dst, off, len);
+     }
+ 
++    // ---- SYNCHRONOUS FAST PATH (additive; nothing in the browser client calls these) -------------
++    // Every byte the decode loop reads is an awaited promise today, even when the bytes are already
++    // sitting in the reader's queue — and they usually are, because the server flushes a whole tick's
++    // packets as ONE WebSocket message. These two let a caller drain what is already buffered without
++    // allocating a promise per byte, and fall back to the awaited path the moment the buffer runs dry.
++    //
++    // CONTRACT: they NEVER change semantics. -1 / false means only "not available synchronously" and
++    // covers every non-normal state too (dummy, remote-closed, reader closed), so the caller's
++    // fallback to read()/readBytes() keeps the exact behaviour those states have today.
++
++    /** @returns 0..255 if a byte was already buffered, or -1 for "use the async path". */
++    tryRead(): number {
++        if (this.dummy || this.remoteClosed) {
++            return -1;
++        }
++
++        return this.wsin.tryRead();
++    }
++
++    /**
++     * ALL-OR-NOTHING bulk read: true only when all `len` bytes were copied. On false NOTHING was
++     * consumed, so the caller can simply await readBytes() over the same range.
++     *
++     * ⛔ The all-or-nothing shape is deliberate: a partial-consume variant would leave a byte cursor
++     * straddling the sync/async boundary, which is a brand-new way to desync the ISAAC stream for no
++     * gain — the guard here is an EXACT buffered-byte count (`total`), not an estimate, so a body that
++     * fits is always fully copied and a body that does not costs one cheap comparison.
++     */
++    tryReadBytes(dst: Uint8Array, off: number, len: number): boolean {
++        if (this.dummy || this.remoteClosed) {
++            return false;
++        }
++
++        return this.wsin.tryReadBytes(dst, off, len);
++    }
++
++    // ---- read-deadline hooks for an EXTERNAL watchdog (see perReadTimer above) -------------------
++
++    /** Terminal: the socket is gone or we closed it. Lets a watchdog drop its reference. */
++    get isDead(): boolean {
++        return this.dummy || this.remoteClosed;
++    }
++
++    /** Date.now() at which the CURRENT read parked on an empty buffer, or 0 when none is pending. */
++    get pendingReadSince(): number {
++        return this.wsin.pendingReadSince;
++    }
++
++    /** Fail the pending read exactly as the per-read 30s timer would have — same `dropReason` string,
++     *  same rejection value (the raw WebSocket, which Client.ts and the headless supervisors
++     *  type-test). No-op when no read is pending. */
++    expirePendingRead(): void {
++        this.wsin.expirePendingRead();
++    }
++
+     close(): void {
+         if (this.dummy) {
+             return;
+@@ -105,11 +189,16 @@ export default class ClientStream {
+         this.wsout.close();
+     }
+ 
+-    private onclose = (_event: CloseEvent): void => {
++    private onclose = (event: CloseEvent): void => {
+         if (this.dummy) {
+             return;
+         }
+ 
++        // 1000/1001 = the server deliberately ended it (a kick or a clean logout).
++        // 1006 = abnormal close with no close frame => a partition or a dropped connection.
++        this.dropReason ??=
++            `ws close code=${event.code}${event.code === 1006 ? ' (abnormal: partition/network)' : ''}` +
++            (event.reason ? ` reason=${event.reason}` : '');
+         this.remoteClose();
+     };
+ 
+@@ -118,6 +207,7 @@ export default class ClientStream {
+             return;
+         }
+ 
++        this.dropReason ??= 'ws error (connection lost)';
+         this.remoteClose();
+     };
+ 
+@@ -209,22 +299,38 @@ class WebSocketReader {
+     private callback: ((data: WebSocketEvent) => void) | null = null;
+     private timeout: ReturnType<typeof setTimeout> | null = null;
+     private rejectRead: (() => void) | null = null;
++    private expireRead: (() => void) | null = null;
++    private waitingSince: number = 0;
+     private closed: boolean = false;
+     private total: number = 0;
+ 
+-    constructor(socket: WebSocket, timeoutMs: number) {
++    constructor(socket: WebSocket, timeoutMs: number, onTimeout?: () => void, perReadTimer: boolean = true) {
+         this.socket = socket;
+         this.timeoutMs = timeoutMs;
++        this.onTimeout = onTimeout;
++        this.perReadTimer = perReadTimer;
+         socket.binaryType = 'arraybuffer';
+         socket.onmessage = this.onmessage;
+     }
+ 
+     private readonly socket: WebSocket;
++    private readonly onTimeout?: () => void;
++    private readonly perReadTimer: boolean;
+ 
+     get available(): number {
+         return this.total;
+     }
+ 
++    /** Date.now() at which the current read parked with an empty buffer; 0 when none is pending. */
++    get pendingReadSince(): number {
++        return this.waitingSince;
++    }
++
++    /** Run the read-deadline path from the outside (the per-read timer is off). Identical body. */
++    expirePendingRead(): void {
++        this.expireRead?.();
++    }
++
+     private onmessage = (e: MessageEvent): void => {
+         if (this.closed) {
+             return;
+@@ -280,15 +386,61 @@ class WebSocketReader {
+         return dst;
+     }
+ 
++    /** Non-blocking single byte. -1 = nothing buffered (or the reader is closed): use read(). */
++    tryRead(): number {
++        if (this.closed) {
++            return -1;
++        }
++
++        const event = this.nextEvent();
++        if (!event) {
++            return -1;
++        }
++
++        this.total--;
++        return event.read;
++    }
++
++    /** Non-blocking bulk read. `total` is the exact count of buffered bytes, so `total >= len`
++     *  GUARANTEES the loop below completes — nothing is ever half-consumed. */
++    tryReadBytes(dst: Uint8Array, off: number, len: number): boolean {
++        if (this.closed || this.total < len) {
++            return false;
++        }
++
++        let remaining = len;
++        let dstPos = off;
++
++        while (remaining > 0) {
++            const event = this.nextEvent();
++            if (!event) {
++                // Unreachable unless `total` and the queue have drifted apart. Returning false here
++                // would silently REPLAY the bytes already copied and desync ISAAC, so fail loudly:
++                // the decode loop rejects and the supervisor reconnects the bot.
++                throw new Error(`ClientStream.tryReadBytes: buffer accounting drift (${remaining}/${len} left)`);
++            }
++            const count = event.readBytes(dst, dstPos, remaining);
++            this.total -= count;
++            dstPos += count;
++            remaining -= count;
++        }
++
++        return true;
++    }
++
+     close(): void {
+         this.closed = true;
++        this.socket.onmessage = null;
+         this.callback = null;
+         this.clearTimeout();
+         this.rejectRead?.();
+         this.rejectRead = null;
++        this.expireRead = null;
++        this.waitingSince = 0;
+         this.event = null;
+         this.queue = [];
+         this.queueRead = 0;
++        this.total = 0;
+     }
+ 
+     fail(): void {
+@@ -297,6 +449,8 @@ class WebSocketReader {
+         this.clearTimeout();
+         this.rejectRead?.();
+         this.rejectRead = null;
++        this.expireRead = null;
++        this.waitingSince = 0;
+     }
+ 
+     private nextEvent(): WebSocketEvent | null {
+@@ -338,19 +492,35 @@ class WebSocketReader {
+             this.rejectRead = (): void => {
+                 this.callback = null;
+                 this.clearTimeout();
++                this.expireRead = null;
++                this.waitingSince = 0;
+                 reject(this.socket);
+             };
+ 
+-            this.timeout = setTimeout((): void => {
++            // The read-deadline body, EXTRACTED so an external watchdog can run the identical path
++            // when the per-read timer is off. Behaviour when perReadTimer is true (the browser
++            // default) is unchanged: the same closure is what setTimeout fires.
++            const expire = (): void => {
+                 this.callback = null;
+-                this.timeout = null;
++                this.clearTimeout();
+                 this.rejectRead = null;
++                this.expireRead = null;
++                this.waitingSince = 0;
++                this.onTimeout?.(); // record WHY; the rejection value stays the socket (browser contract)
+                 reject(this.socket);
+-            }, this.timeoutMs);
++            };
++            this.expireRead = expire;
++            this.waitingSince = Date.now();
++
++            if (this.perReadTimer) {
++                this.timeout = setTimeout(expire, this.timeoutMs);
++            }
+ 
+             this.callback = (event: WebSocketEvent): void => {
+                 this.clearTimeout();
+                 this.rejectRead = null;
++                this.expireRead = null;
++                this.waitingSince = 0;
+                 this.event = event;
+                 resolve(event);
+             };

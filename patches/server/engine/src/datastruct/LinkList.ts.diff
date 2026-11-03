@@ -1,0 +1,46 @@
+diff --git a/server/engine/src/datastruct/LinkList.ts b/server/engine/src/datastruct/LinkList.ts
+index 7ab79b1f309500588cb0f6608836684153790192..1a224420f28518c7cb011fef8fafe520795757cb 100644
+--- a/server/engine/src/datastruct/LinkList.ts
++++ b/server/engine/src/datastruct/LinkList.ts
+@@ -1,4 +1,24 @@
+ import Linkable from '#/datastruct/Linkable.js';
++import { SIM_FAST_ITER as SIM_FAST } from '#/simfast.js';   // rs-sdk OFFLINE SIM perf
++
++// rs-sdk OFFLINE SIM perf (SIM_FAST): LinkList.all()'s generator as a class iterator with the same steps
++class LinkListIter<T> {
++    private started = false;
++    private finished = false;
++    private save: Linkable | null = null;
++    constructor(private readonly list: LinkList<Linkable>, private readonly reverse: boolean) {}
++    next(): IteratorResult<T> {
++        if (this.finished) return { done: true, value: undefined };
++        const list = this.list;
++        let link: Linkable | null;
++        if (!this.started) { this.started = true; link = this.reverse ? list.tail() : list.head(); }
++        else { list.cursor = this.save; link = this.reverse ? list.prev() : list.next(); }
++        if (link === null) { this.finished = true; return { done: true, value: undefined }; }
++        this.save = list.cursor;
++        return { done: false, value: link as unknown as T };
++    }
++    [Symbol.iterator](): this { return this; }
++}
+ 
+ export default class LinkList<T extends Linkable> {
+     private readonly sentinel: Linkable = new Linkable();
+@@ -94,7 +114,15 @@ export default class LinkList<T extends Linkable> {
+         }
+     }
+ 
+-    *all(reverse = false): IterableIterator<T> {
++    // rs-sdk OFFLINE SIM perf (SIM_FAST): the generator below as a plain iterator object with the same steps: head()/tail()
++    // on the first next(), then restore the saved cursor and step with next()/prev(); same cursor side effects (an empty
++    // list still resets the cursor on the first next()). Every npc runs processQueue every tick, mostly on an empty queue.
++    all(reverse = false): IterableIterator<T> {
++        if (!SIM_FAST) return this.allGen(reverse);
++        return new LinkListIter<T>(this as unknown as LinkList<Linkable>, reverse) as unknown as IterableIterator<T>;
++    }
++
++    private *allGen(reverse = false): IterableIterator<T> {
+         if (reverse) {
+             for (let link = this.tail(); link !== null; link = this.prev()) {
+                 const save = this.cursor;

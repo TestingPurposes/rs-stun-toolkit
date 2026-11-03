@@ -1,0 +1,41 @@
+rs-sdk-stun-toolkit
+Copyright (c) 2026 rs-sdk-stun-toolkit contributors. Licensed under the MIT License (see LICENSE).
+
+This toolkit is an add-on for rs-sdk (https://github.com/MaxBittker/rs-sdk), built and tested on upstream
+commit 2012ab67f612524d8bcca97f6b085a539ba10e78. rs-sdk and its components are MIT-licensed:
+
+  rs-sdk (repository root LICENSE)                MIT, Copyright (c) 2025 Lost City
+  server/engine (server/engine/LICENSE)           MIT, Copyright (c) 2023-2026 Lost City
+  server/webclient (server/webclient/LICENSE)     MIT, Copyright (c) 2023-2026 Lost City
+  server/content (server/content/LICENSE)         MIT, Copyright (c) 2023-2026 Lost City
+
+Upstream-derived files. The files below are modified copies of rs-sdk files (whole-file replacements; the matching
+patches/<file>.diff shows our change against the base commit). They remain under the upstream MIT license and
+copyright notice above, with our modifications also offered under the MIT License:
+
+  sdk/pathfinding.ts
+  sdk/test/pathfinding-local.ts
+  server/engine/src/app.ts
+  server/engine/src/datastruct/LinkList.ts
+  server/engine/src/engine/World.ts
+  server/engine/src/engine/entity/EntityList.ts
+  server/engine/src/engine/entity/NetworkPlayer.ts
+  server/engine/src/engine/script/handlers/ServerOps.ts
+  server/engine/src/network/game/client/handler/ClientCheatHandler.ts
+  server/engine/src/server/ClientSocket.ts
+  server/engine/src/server/login/LoginThread.ts
+  server/engine/src/setup.ts
+  server/engine/src/web/index.ts
+  server/vendor/rsmod-pathfinder/rsmod-pathfinder.js
+  server/webclient/src/io/ClientStream.ts
+  server/webclient/src/io/Packet.ts
+
+Code ported from upstream. server/webclient/headless/leanclient.ts and the decode helpers next to it port the login
+handshake, the player/npc info decoders and the movement code of server/webclient/src (Client.ts, ClientPlayer.ts,
+ClientEntity.ts and related files), MIT, Copyright (c) 2023-2026 Lost City.
+
+Game data. sdk/navgrid/navgrid.bin, sdk/collision-data.bin and the JSON tables under sdk/navgrid/ and
+server/webclient/headless/data/ are derived from the rev-289 game cache and scripts that rs-sdk ships
+(server/content); the extractors that rebuild them are included (see GUIDE.md "Navgrid").
+
+Both licenses are MIT, so the combined work is distributable under MIT as long as both copyright notices stay with it.

@@ -1,0 +1,4 @@
+[
+  {"x": 2907, "z": 3476, "level": 0, "dest": {"level": 0, "x": 2907, "z": 9875}, "locId": 1754, "op": 1, "trust": "manual", "label": "witch's house cellar ladder (down; probed rev 274)"},
+  {"x": 2907, "z": 9876, "level": 0, "dest": {"level": 0, "x": 2907, "z": 3475}, "locId": 1755, "op": 1, "trust": "manual", "label": "witch's house cellar ladder (up)"}
+]

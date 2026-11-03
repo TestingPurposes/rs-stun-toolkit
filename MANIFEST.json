@@ -1,0 +1,3562 @@
+{
+ "name": "rs-sdk-stun-toolkit",
+ "upstream": {
+  "repo": "https://github.com/MaxBittker/rs-sdk",
+  "base": "2012ab67f612524d8bcca97f6b085a539ba10e78",
+  "license": "MIT (Copyright (c) 2025 Lost City)"
+ },
+ "sources": {
+  "core": {
+   "what": "navgrid, leanclient, brain sim (private overlay repo, main line)",
+   "commit": "9f12cf14bc952709073544bd3cbb7e885ebca89c"
+  },
+  "quests": {
+   "what": "quest scripts (private overlay repo, quest line)",
+   "commit": "8b3994d133102274fa2c05c430138844c4e06943"
+  },
+  "lockstep": {
+   "what": "lockstep engine + tools (exporter templates)",
+   "commit": "5b67a069abe1268cb9f84069dcfb403c5921c9a3"
+  },
+  "exporter": {
+   "commit": "5b67a069abe1268cb9f84069dcfb403c5921c9a3"
+  }
+ },
+ "components": {
+  "leanclient": {
+   "files": 25,
+   "bytes": 3248847
+  },
+  "navgrid": {
+   "files": 63,
+   "bytes": 28415837
+  },
+  "lockstep-sim": {
+   "files": 22,
+   "bytes": 311797
+  },
+  "quests": {
+   "files": 256,
+   "bytes": 3367117
+  },
+  "brain-sim": {
+   "files": 69,
+   "bytes": 3273498
+  }
+ },
+ "bunDependencies": [],
+ "files": [
+  {
+   "path": "bots/tick.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5035,
+   "sha256": "bb3cd5bc9b978053c478120f0ccf8c41a4cf9c14e244c019d70a6e36ce7c1a92"
+  },
+  {
+   "path": "sdk/collision-data.bin",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 21998816,
+   "sha256": "d46dafed614b70fce77390cafc7b466dd508e20aa538b315d1371dd1ed66c240"
+  },
+  {
+   "path": "sdk/collision-store.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 8718,
+   "sha256": "b7b622dde0e15a836bdcbd081b001c316e1693ac1e48a567131b1e93330e6e3a"
+  },
+  {
+   "path": "sdk/navgrid/area-portals.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 14708,
+   "sha256": "2c731522e770b80396e5542cf7e0c0aef5d4a45c22c86c1e4307b6a6acccb680"
+  },
+  {
+   "path": "sdk/navgrid/build.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 10960,
+   "sha256": "96c34592a1dd80b81cb6498f28ccaca99f456dc0dd45407ce1a0e7303bf07048"
+  },
+  {
+   "path": "sdk/navgrid/compare.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2007,
+   "sha256": "74d89ff4fb412a351e7d8dbe6c0f6d7ab5cde8eba4fe3e5047aee33aae3dcc3c"
+  },
+  {
+   "path": "sdk/navgrid/diagonal-doors.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2248,
+   "sha256": "3241253679ee537dd4e98dfdabf8073b05f15743def2149de8dc6dd8cbbca49e"
+  },
+  {
+   "path": "sdk/navgrid/door-states.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 6346,
+   "sha256": "cfdfcdfd3f53dd0f49d124b6f55fef100a0da25438d1869acc2624e87f42c2bc"
+  },
+  {
+   "path": "sdk/navgrid/door-tracker.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 6953,
+   "sha256": "cd8a39d75383f80a4df43cd736dce5ffd34046362e4718110aee5224d1aaf4e3"
+  },
+  {
+   "path": "sdk/navgrid/edge-blocks.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 4914,
+   "sha256": "3fb5a7bb7789e6bd17385f054fefed434761e150756b42547851188481ae83f8"
+  },
+  {
+   "path": "sdk/navgrid/extract-area-portals.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 8278,
+   "sha256": "4a0ec99914e7dfe3c81540764f1d705f72fbf349df12421898520207ef55ef88"
+  },
+  {
+   "path": "sdk/navgrid/extract-diagonal-doors.mjs",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 4930,
+   "sha256": "559e04c044031d2b133ba03b14006476840b55f738eec8bbcf7950354359bb74"
+  },
+  {
+   "path": "sdk/navgrid/extract-door-states.mjs",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 3653,
+   "sha256": "45ea77034b0e3413bd83c932862f1e500a8f6a196e70b0e30e5a670ccd9a768f"
+  },
+  {
+   "path": "sdk/navgrid/extract-generic-ladders.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 7083,
+   "sha256": "2280830ca6a00cd279c0ba7da1c6efaf7610ae01b0dc2f607b8bf3edaaf2c903"
+  },
+  {
+   "path": "sdk/navgrid/extract-obj-tables.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2426,
+   "sha256": "beb5b3b09f9c807de6f2c0cbcafbd7e8cfbc0c23179d3f5fbe491ce3394c51a3"
+  },
+  {
+   "path": "sdk/navgrid/extract-portals.mjs",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 9039,
+   "sha256": "80b0c5c630eb957ca1d04a4decf5e7abe09cd69af2632d8eadb6959dc927c873"
+  },
+  {
+   "path": "sdk/navgrid/extract-scripted-doors.mjs",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5217,
+   "sha256": "2e81155d45723c8d164fdff3c4e17c16253148d68e77d7ae8256c636982ab051"
+  },
+  {
+   "path": "sdk/navgrid/extract-upper-floor.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2777,
+   "sha256": "f1ef7770b85945d7d6d5178d16f3c3dcd6ef347f1f4d7fc9fed783f0ba8c51e9"
+  },
+  {
+   "path": "sdk/navgrid/format.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5177,
+   "sha256": "7cc727a31483e05ee563a9a14c7d82ee2477cd563c781db90a2bea4bb1ba98ac"
+  },
+  {
+   "path": "sdk/navgrid/generic-ladders.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 261475,
+   "sha256": "efd842596759b804d2428f368bf772eb33e583dacc737358cdba77bf3dc49006"
+  },
+  {
+   "path": "sdk/navgrid/index.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 22611,
+   "sha256": "769759001d3b207fcead8c427bdc78acdd59a142782390a9b2f9e9908a5e903a"
+  },
+  {
+   "path": "sdk/navgrid/levels.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 59259,
+   "sha256": "e70bfd2917c4e1a31bce8626a5eb2a42db0450c27276bf2c1d9d9a0a212ece45"
+  },
+  {
+   "path": "sdk/navgrid/live-accepted-edges.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 1856,
+   "sha256": "14787592878a407c7804c50ab7b00ba4274f060fc68cb25033bb2ea02c9dfe6c"
+  },
+  {
+   "path": "sdk/navgrid/live-leaves.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5385,
+   "sha256": "bbffc60b4b554f248b937951eb602276ad493701eeaf6ea83d16939957d0cd72"
+  },
+  {
+   "path": "sdk/navgrid/locmeta.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 3569,
+   "sha256": "b6db9721bddf08644eeb47b360107f4fdf9016b4f23b8bd336ac0e4e5ca84bbf"
+  },
+  {
+   "path": "sdk/navgrid/manual-portals.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 361,
+   "sha256": "69f340b3bf616e22755209cb41aa1eedb93de6f8d2368f4f58ef8ee57cc859d5"
+  },
+  {
+   "path": "sdk/navgrid/navgrid.bin",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 4907712,
+   "sha256": "219bf47f95e6823bfc5702405b229f1b518ede0b014976755c9dc2db4b376ff0"
+  },
+  {
+   "path": "sdk/navgrid/obj-tables.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2431,
+   "sha256": "b3651ffa07a48c9e6d728a3265ee5dd8fc4934e37759b6a50b259d42347d32a0"
+  },
+  {
+   "path": "sdk/navgrid/portal-suspects.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2,
+   "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  {
+   "path": "sdk/navgrid/portals.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 41705,
+   "sha256": "eb1ed39d60dd6660b69ca6f8aeb8219dca33b2a79155690935e22cde9aeb669f"
+  },
+  {
+   "path": "sdk/navgrid/quest-gated-doors.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 3941,
+   "sha256": "387333c92607d321a63049480b48771236eee5307d3882b83e6f23da22804785"
+  },
+  {
+   "path": "sdk/navgrid/reach.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 15706,
+   "sha256": "8cacf49532d6477bcc460f13485ae351ebd3e20bf8cfe34662fd3ec0a2f0c39a"
+  },
+  {
+   "path": "sdk/navgrid/render.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 14054,
+   "sha256": "db8cf808ee477a45a87bc24e983714d9484b5dc1748d5fdec68889314e4c7375"
+  },
+  {
+   "path": "sdk/navgrid/scripted-door-ids.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2002,
+   "sha256": "9232ddf78b33e82a6af0ad1763ec62705a285fcc422888c4c818ac55033a1b0a"
+  },
+  {
+   "path": "sdk/navgrid/surface.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 9609,
+   "sha256": "83b3ab328e348d0361867a9efe4fa9d21c293bfed7f0b4633f2704b9a5cbee72"
+  },
+  {
+   "path": "sdk/navgrid/teleports.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 17061,
+   "sha256": "c4808b9cf53b9967884c80a89c60272a8b6bde3b9ced5b6be89ad286ac0d9158"
+  },
+  {
+   "path": "sdk/navgrid/transports.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 113406,
+   "sha256": "7140e62900e3d0699c1294aea52a5854f9735732caad3cab6968fd646ce2b0c8"
+  },
+  {
+   "path": "sdk/navgrid/unopenable-doors.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 318,
+   "sha256": "8b29a419642a4539dff52891bdf5c30f6cf21ef4c6a39ddad5d28b6e1cbb3ce6"
+  },
+  {
+   "path": "sdk/navgrid/upper-floor.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 426735,
+   "sha256": "2d77e980ad05169f8f57783197d2beb5c0170c32ec7cc32865a7d54a050ac542"
+  },
+  {
+   "path": "sdk/navgrid/v3-door-cuts.json",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 24593,
+   "sha256": "bab07e1fcc84ed11bedb855f9ba6cd976be2cc0ef5d5e3bc220c0204cfdee975"
+  },
+  {
+   "path": "sdk/navgrid/validate-portals.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 8665,
+   "sha256": "637c9bf6e50a6acf7483a46bce2ea3632c7813f5b18d01999c352786d300e2c9"
+  },
+  {
+   "path": "sdk/pathfinding.ts",
+   "component": "navgrid",
+   "kind": "patched",
+   "source": "merged",
+   "bytes": 30525,
+   "sha256": "0607d3cd7ebde0542a656e5bf59e1f19da4d3f898fdc155e94675c5fb9cf4e8b",
+   "upstreamBlob": "3c7b2449ff9befb3b653bc9e8cfe4932fea9faeb",
+   "patch": "patches/sdk/pathfinding.ts.diff"
+  },
+  {
+   "path": "sdk/test/pathfinding-local.ts",
+   "component": "navgrid",
+   "kind": "patched",
+   "source": "core",
+   "bytes": 16256,
+   "sha256": "0990775181b7d77578ebca000a6bb6b80fed901e8b5b85ccf1864a344d73ce2b",
+   "upstreamBlob": "3f6c3b23e7805d81211768361115670129896590",
+   "patch": "patches/sdk/test/pathfinding-local.ts.diff"
+  },
+  {
+   "path": "server/engine/src/app.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 2087,
+   "sha256": "59e3abf20114887c4d409fe8a5cf09ec08b7db41865dcead439bce069c571098",
+   "upstreamBlob": "d198341f831ad296e05f7130c352194a3b1bfd58",
+   "patch": "patches/server/engine/src/app.ts.diff"
+  },
+  {
+   "path": "server/engine/src/datastruct/LinkList.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 4500,
+   "sha256": "a27136477018bd48318d030213353984060d2609893957df95621f9fe8436062",
+   "upstreamBlob": "7ab79b1f309500588cb0f6608836684153790192",
+   "patch": "patches/server/engine/src/datastruct/LinkList.ts.diff"
+  },
+  {
+   "path": "server/engine/src/engine/entity/EntityList.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 4472,
+   "sha256": "6d2c787d0c4209813e0b6cab6768437022e05474786865ba0bda744b1759e7aa",
+   "upstreamBlob": "8f1eba12f04901ca83c298f4a2867ba655d305eb",
+   "patch": "patches/server/engine/src/engine/entity/EntityList.ts.diff"
+  },
+  {
+   "path": "server/engine/src/engine/entity/NetworkPlayer.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 15452,
+   "sha256": "93cb214322c044b2f891a9e356bd03a23625c804fc0cb35e056a1db711e85a60",
+   "upstreamBlob": "07f4adf32db229d4ab79aed9d49ae126933205e5",
+   "patch": "patches/server/engine/src/engine/entity/NetworkPlayer.ts.diff"
+  },
+  {
+   "path": "server/engine/src/engine/script/handlers/ServerOps.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 13997,
+   "sha256": "1d0368e866eeba752da3b805047469f773d82c1e9544185a90ae85b509dc1b05",
+   "upstreamBlob": "99ec3f5c339fcfec061a915b1326103c747fbd35",
+   "patch": "patches/server/engine/src/engine/script/handlers/ServerOps.ts.diff"
+  },
+  {
+   "path": "server/engine/src/engine/World.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 127257,
+   "sha256": "3d51f4b4ff2e046d0b6a49581eb953e4323307d58955d5332a0b858e018db146",
+   "upstreamBlob": "4cc1b0b4c92430a823afad2ba4ca5bdbad90b94a",
+   "patch": "patches/server/engine/src/engine/World.ts.diff"
+  },
+  {
+   "path": "server/engine/src/network/game/client/handler/ClientCheatHandler.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 28911,
+   "sha256": "95aaab1d596e533952466312cdde342a387cb9613035c50b188e5d5708ee2aff",
+   "upstreamBlob": "e1debea5921ec5ad1018f9a4411850218fde9123",
+   "patch": "patches/server/engine/src/network/game/client/handler/ClientCheatHandler.ts.diff"
+  },
+  {
+   "path": "server/engine/src/server/ClientSocket.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 2316,
+   "sha256": "572b9bbc472929444b0612e6e966bb02656808cc898d4e523ad74235f6d4b6bf",
+   "upstreamBlob": "d47ff3e9c5282608059a1b718e1687361eb37741",
+   "patch": "patches/server/engine/src/server/ClientSocket.ts.diff"
+  },
+  {
+   "path": "server/engine/src/server/login/LoginThread.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 6122,
+   "sha256": "cc633f4c24015a73ff1bc8f122c99aa51db80d64d8c0acae1c86393dca7b5b25",
+   "upstreamBlob": "0dfd44f62cd61b80b1c47bb3196c41f0a0750468",
+   "patch": "patches/server/engine/src/server/login/LoginThread.ts.diff"
+  },
+  {
+   "path": "server/engine/src/setup.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 8977,
+   "sha256": "6aaae1131e22ab6164fa6bf4fd94566775f9687e1de3f9a927f69bb3cd32b3b9",
+   "upstreamBlob": "d4197f4f0d02368ffecd95fbfdf2bbe15ed6e02a",
+   "patch": "patches/server/engine/src/setup.ts.diff"
+  },
+  {
+   "path": "server/engine/src/simcrowd.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "lockstep",
+   "bytes": 22679,
+   "sha256": "6da25e16af1a4e54593ea155e66b8836b53156249e61606d11ccf334e0c58255"
+  },
+  {
+   "path": "server/engine/src/simdoors-audit.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "lockstep",
+   "bytes": 1879,
+   "sha256": "f9abe8172d0193e7a602250805e3c3db9ded210827b6fada61ff3fc35e497485"
+  },
+  {
+   "path": "server/engine/src/simdoors.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "lockstep",
+   "bytes": 14076,
+   "sha256": "7af3630305965562c47514e762c5b03066f5130b72364f3ed2323d926a116eae"
+  },
+  {
+   "path": "server/engine/src/simdrop.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "lockstep",
+   "bytes": 7987,
+   "sha256": "3c1b4111befe2392514551e6a4e03ccc21e89370d9a37743af5caf812b6d515e"
+  },
+  {
+   "path": "server/engine/src/simfast.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "lockstep",
+   "bytes": 830,
+   "sha256": "4f963eafecd89129bd44b6a76f7273b8891da4773bfab34ddf55781c162d551f"
+  },
+  {
+   "path": "server/engine/src/simnet.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "lockstep",
+   "bytes": 2800,
+   "sha256": "f5e25125b0efab15b77c000c95b2e68336d7eed96632296ef0f20f3f7436b11e"
+  },
+  {
+   "path": "server/engine/src/simprof.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "lockstep",
+   "bytes": 7090,
+   "sha256": "9c9e665dd9321b3f8e0c80f8efdca10b8f1e173270d9a4481d596b058f91a4cb"
+  },
+  {
+   "path": "server/engine/src/simseed.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "lockstep",
+   "bytes": 1991,
+   "sha256": "41b7050e02d36dab70e9a172397437612fdddf6efe25613245358c42711641d3"
+  },
+  {
+   "path": "server/engine/src/web/index.ts",
+   "component": "lockstep-sim",
+   "kind": "patched",
+   "source": "lockstep",
+   "bytes": 23423,
+   "sha256": "f55f90b75bbab48aefe38d46de82ac8c351b8f141a1d46455a827e76fb8ed133",
+   "upstreamBlob": "90f70592f8fb3d507f5c9a6375301991a3d4d217",
+   "patch": "patches/server/engine/src/web/index.ts.diff"
+  },
+  {
+   "path": "server/vendor/rsmod-pathfinder/rsmod-pathfinder.js",
+   "component": "navgrid",
+   "kind": "patched",
+   "source": "core",
+   "bytes": 25923,
+   "sha256": "f35c9a9a7096ddbf356547588979e55c4c8f4cb51c6933e2ff4008214495c88a",
+   "upstreamBlob": "4f4033fd77ea94a7c89caa22aeef4de28f53497e",
+   "patch": "patches/server/vendor/rsmod-pathfinder/rsmod-pathfinder.js.diff"
+  },
+  {
+   "path": "server/webclient/headless/bank-sites.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1866,
+   "sha256": "45f51aa01c6307eff0de7e6316ee308e89d183466e4fa53398b4ec66ff444fa2"
+  },
+  {
+   "path": "server/webclient/headless/blocked-edges.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2326,
+   "sha256": "8c92f5fb37237c462b9e886e9d0dcf343aaee7521b9091cb4770b5fabc499238"
+  },
+  {
+   "path": "server/webclient/headless/blocked-tiles.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5604,
+   "sha256": "ab368b05c715e97edfc6521f2fcadff53f0ab474e0dc2f8f096da546ce9e1e1a"
+  },
+  {
+   "path": "server/webclient/headless/capability-tables.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 14621,
+   "sha256": "21c2f3414208586b11fef7f1726c94baba6ebff11ffbdc9ce16015ac6f0b2a78"
+  },
+  {
+   "path": "server/webclient/headless/carried-risk.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 11457,
+   "sha256": "29ef79050da209566883b3bcfedcb059056fb8d4459aefa1f02ea136901456ad"
+  },
+  {
+   "path": "server/webclient/headless/castle-escape.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 13407,
+   "sha256": "7d353567881586b3ecbae84f048c7d43735589cda10816a8af1b90c06af9f0bc"
+  },
+  {
+   "path": "server/webclient/headless/chat-codec.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 38076,
+   "sha256": "efc83811fa5aef246aefeeb0b5f9cab0605fe52fa9e8565d80572048d82d05a1"
+  },
+  {
+   "path": "server/webclient/headless/data/bank-locs.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2183,
+   "sha256": "e1a00e36fa19ab71e3f8f2bf6135fcfb01d02d17dab6571272e9209ed7bb1971"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-capabilities.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 33205,
+   "sha256": "b51bb50bafdee0be8fc067df6150c8c8bc07fb59351a27f0512d856c6ae7be88"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-gear.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 17415,
+   "sha256": "633db3205b16f023f0b8351b56df407283ca8f1d6b7e439d7e072e1476dde398"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-item-values.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 56579,
+   "sha256": "85e6051a92b5490245f2559eb08323c4fa2e0e149778b495f157388d1f402204"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-obstacles.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 85009,
+   "sha256": "d5350f4c8791557d5f1be54aa1cfcca24f6561deb8146ae8a13c6c6364b4d24f"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-quests.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 92803,
+   "sha256": "b0765a686646445ed70cfce8b93521daebce2173b57cd8a2577d093c0dba245c"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-skilling.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 96914,
+   "sha256": "551828a4208af98675902c7e559b4a042346391abba98329812873fce962a07f"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-spells.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 9656,
+   "sha256": "010a983977ef19e03f35fe2e4e65bb4849f59fbeaf972248eb9736d5081e65bd"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-weapons.mjs",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 48026,
+   "sha256": "781d1d52aa101c2762972b47383453ec155ede91d8199b13338a119b0d2c8543"
+  },
+  {
+   "path": "server/webclient/headless/data/extract-wood-sites.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 18715,
+   "sha256": "b53ae67918189122511c6419a41422a02065a37c905dc7324dd128bd2a0aee77"
+  },
+  {
+   "path": "server/webclient/headless/data/gear.json",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 344290,
+   "sha256": "489c054f15ef108fc83c8c3ac93386b77e49f0dc2b6cae4edc88e24b538a2830"
+  },
+  {
+   "path": "server/webclient/headless/data/obstacles.json",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 841894,
+   "sha256": "da209ca7a6d0bf038266637201e1cfed47be061086c276c0a7b1aa40ed008f33"
+  },
+  {
+   "path": "server/webclient/headless/data/spells.json",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 17350,
+   "sha256": "b9d4aa6a4d5b9cd6a45445580e1fef29f3ece1ce0099d8673944e05eae94e20a"
+  },
+  {
+   "path": "server/webclient/headless/data/weapons.json",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 275250,
+   "sha256": "f7921dfd54a1ea9420ed666f07e36159808f90524d806cc96af0bf1ee32216fd"
+  },
+  {
+   "path": "server/webclient/headless/data/wood-sites.json",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 1242980,
+   "sha256": "c9ef96bb33935399e5e04730a5a4d2a331a6ad8b7d0ed19684fdf81a302aca9f"
+  },
+  {
+   "path": "server/webclient/headless/door-table.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 331668,
+   "sha256": "b685199ce66a66f440d4e65496ac61cfa4457131bad6a0514110598f442955a4"
+  },
+  {
+   "path": "server/webclient/headless/entrana.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2600,
+   "sha256": "c9821ea23c12f2bb2bb5fc5e1bd26cf3ad986997ec34065d02f1e65a7ff33a20"
+  },
+  {
+   "path": "server/webclient/headless/gear-table.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 20559,
+   "sha256": "217f30685347b07d95c5b4a2f3965836e6102e52bfd1182c54604519a3707fe6"
+  },
+  {
+   "path": "server/webclient/headless/interaction-ack.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 38473,
+   "sha256": "1436a6831ab9a31a0476a97d331a7d0634d444caaaedecd46483fe0c5ce42136"
+  },
+  {
+   "path": "server/webclient/headless/interior-portal.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 355,
+   "sha256": "4aaaeedf1d9266cb2091544970dc46a4e433e56a1f1263e7bcdd6aed55ddaa61"
+  },
+  {
+   "path": "server/webclient/headless/item-values.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 548590,
+   "sha256": "bdd8c62e2cd22ef0b126a04873243b63573b7a34d08205bddebfad3cd2f345d9"
+  },
+  {
+   "path": "server/webclient/headless/leanbot.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 578923,
+   "sha256": "f9aed333dfc87be0d0ed2763b843d957cb6e8ab8ca60894ae5125448393834ef"
+  },
+  {
+   "path": "server/webclient/headless/leanclient.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 58617,
+   "sha256": "600b2668428479696e5f422cacfa01b5ef1f873155a3639656d5c73c08c01aaf"
+  },
+  {
+   "path": "server/webclient/headless/loc-scene.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 34263,
+   "sha256": "e100725ef680353183f3687d35d15040bdfddec3e22108097c47a0d84b272285"
+  },
+  {
+   "path": "server/webclient/headless/lostcity-spirit.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 10246,
+   "sha256": "e3dd07d6253fecc759a1b5b4bf1f718570954700573d714fcf592c546473c729"
+  },
+  {
+   "path": "server/webclient/headless/npc-scene.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 46386,
+   "sha256": "0d5fa77693e806cc9459211deb388d6acfba6db233431d36adeaf3a72ce1abfb"
+  },
+  {
+   "path": "server/webclient/headless/npc-target.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 11160,
+   "sha256": "96fc9077c5bcd7cdaf1f92ef908933404d53b5071d2dfa759c24494af2990a51"
+  },
+  {
+   "path": "server/webclient/headless/progress-watchdog.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 16813,
+   "sha256": "94d0c1c7ab1ed4b062ffb8833790381978cfe4ab49f08638ed2c900171edfe88"
+  },
+  {
+   "path": "server/webclient/headless/quest-death.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 84802,
+   "sha256": "3753fc70af14357b03bf8ed226e3896e503d8223fcfcf78bbf0217eb0a899277"
+  },
+  {
+   "path": "server/webclient/headless/quest-lostcity.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 55398,
+   "sha256": "5667ec364417a1e97fe3e6f7df8eb3f9ca73db0e4d089d0edd27dd265c4c18a4"
+  },
+  {
+   "path": "server/webclient/headless/quest-runner.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 65468,
+   "sha256": "8b45b5c0f3026efb1b944e63b53b1d4d0b0f0d02e0217a6d9845a791fa75bcfa"
+  },
+  {
+   "path": "server/webclient/headless/quest-state.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 97065,
+   "sha256": "b4ea435c60dc172251c52357e58412f026c1f1ad6dff8677cfa0c1e3b7623f45"
+  },
+  {
+   "path": "server/webclient/headless/quest-supplies.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 39407,
+   "sha256": "e33935aa2d7c59b9f5319d3dbca4f97521e9dfe990067b20b190835c2f727571"
+  },
+  {
+   "path": "server/webclient/headless/quest-troll.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "merged",
+   "bytes": 57596,
+   "sha256": "144e03ba987f2afd0dd98eec2d122aa2def084d97f9274a0e0eea61626bacd51"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/run-death-plateau.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3436,
+   "sha256": "b9c66f628ab7ad980a9a4aecd62edcca5a148e713a581d37554b477671d8795a"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/run-death-plateau.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 8217,
+   "sha256": "17369888ca27c9b04ea71e3e8d296daa69688b792a5c78cf68811e7e373de67b"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/run-lost-city.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2956,
+   "sha256": "c8cce65ee9da7540f540baaafc5786e1395fef5a1e056c09163f3a94442c6c6d"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/run-lost-city.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5308,
+   "sha256": "73b2599ecdb204bf8a0f6800aa55ae8ca1e4d9bbcdc99a2b52367796b07800c9"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/run-rune-mysteries.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2419,
+   "sha256": "5da6c41aa4843d84010f4a8781a9661d51cfabb2763258ccd5977904ff572cf6"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/run-rune-mysteries.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5663,
+   "sha256": "51166f26078d3a40d6b9b930472f32aaa3fe06ea26882ee4919c01292c97280b"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/run-troll-stronghold.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3601,
+   "sha256": "0a7be28e0df8cbaeee342f464aca0ea154c37c67a331fb0b7447caa190f5427d"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/run-troll-stronghold.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5269,
+   "sha256": "a0851ee770be4d964818cb0418b52ef2fd77f277af252f8bfbcaf2845eebfdc4"
+  },
+  {
+   "path": "server/webclient/headless/quests-share/share-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 11658,
+   "sha256": "fa423689775fc93cd03a25d6b6d5455554c751b3613c5db508c10f2176d15165"
+  },
+  {
+   "path": "server/webclient/headless/ranged-kit.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 18585,
+   "sha256": "d37bb86812fc88605ca52f15208b468d148699575a49f469af151fa16c2e3a62"
+  },
+  {
+   "path": "server/webclient/headless/rc-rm-recover.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 14255,
+   "sha256": "3be5cbb8330cc366eeb7ec47edfc2245eb1228606e85c9bf9a2bda13b341dbf3"
+  },
+  {
+   "path": "server/webclient/headless/rm-driver.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 27225,
+   "sha256": "3e15a6bb7c1e1a1ce434a8e0b72f34d57e249f42b46c7e709db120c88ce86c70"
+  },
+  {
+   "path": "server/webclient/headless/route-danger.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 13842,
+   "sha256": "6b90b8c729d2dcdc37284eb446ab349ee1d22eb4ef4e868733ce4061ce3c1ec3"
+  },
+  {
+   "path": "server/webclient/headless/route-feasibility.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 56355,
+   "sha256": "bcb1630186d7ba8ea9185c0dfbb8aaf5586bf5e24a7af45b2192067870928a4f"
+  },
+  {
+   "path": "server/webclient/headless/route-gate.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 21411,
+   "sha256": "b787105ac149c017cf63f98cc2aeb34f88db406b2f6972fdefb661326d80d574"
+  },
+  {
+   "path": "server/webclient/headless/sim/ARCHITECTURE.md",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 27442,
+   "sha256": "2b49d7efe923957b1b1d93a2916ac233d0de236e1b279c7623a34df2a61b05ab"
+  },
+  {
+   "path": "server/webclient/headless/sim/bury-combat.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 65598,
+   "sha256": "d7a66fbd9d37df26794363f36d3261f1320fb87955054ae47e976df9facced3b"
+  },
+  {
+   "path": "server/webclient/headless/sim/capabilities.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 40645,
+   "sha256": "bad025b3bbc0f1f066c20b37f4074bca053a065881f9149c724af3b2ab33bf6e"
+  },
+  {
+   "path": "server/webclient/headless/sim/castle-door-geo.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5293,
+   "sha256": "f667ccdb0eb5767c5e4fa7693f5fe6ff8d481f46e255d7536b691c75e8263e9a"
+  },
+  {
+   "path": "server/webclient/headless/sim/castle-door-wedge.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 10258,
+   "sha256": "1d45cf9685a7008cb35205c3b9e905d88f3c84c487729b450715534a2bd5e05c"
+  },
+  {
+   "path": "server/webclient/headless/sim/chat-wire.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 27471,
+   "sha256": "57ecf03eeb15f2052fffde9c582e4d7af18e91ac7bc47d7d6747ef0610e16eb2"
+  },
+  {
+   "path": "server/webclient/headless/sim/climb-reposition-side.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2228,
+   "sha256": "26b4ec20a4fa149062938a787e3dab4862c77d7df515ccdc4c1c3ce473faf91e"
+  },
+  {
+   "path": "server/webclient/headless/sim/collision-order-probe.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5394,
+   "sha256": "004ad895c93e59ef78fc13e5fa31e3f0a82164affeacedd158dd0e8ca063d2e9"
+  },
+  {
+   "path": "server/webclient/headless/sim/collision-store.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 3010,
+   "sha256": "5d7577ee1a30e6556e69757c8c9d02160723548a6e51cff7bfeb2ce149fc301d"
+  },
+  {
+   "path": "server/webclient/headless/sim/combat.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 4174,
+   "sha256": "0d9cef52af79a8a7da27906af57c0a94de8d7690358d313ec53b23fba3429014"
+  },
+  {
+   "path": "server/webclient/headless/sim/combat.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 22866,
+   "sha256": "23a3807eaf54d7d7617452c62556d24287ab64d89053c7e52ab7ab343167057e"
+  },
+  {
+   "path": "server/webclient/headless/sim/content-names.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 1648,
+   "sha256": "2ba1ac4336ba378898c6c4359c2593111c3ee25ac02b02e899e5dbc7583d659a"
+  },
+  {
+   "path": "server/webclient/headless/sim/coop.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 153207,
+   "sha256": "81911a6af7bc94e4ac53e8cb9770b63e585315ef2c1ed37af67899973dff0555"
+  },
+  {
+   "path": "server/webclient/headless/sim/crowd.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 3745,
+   "sha256": "05782bea34a79a42d8b5eecfd11d8c3f033abe60da0ef516077b282a0fd578b0"
+  },
+  {
+   "path": "server/webclient/headless/sim/door-cross.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 4263,
+   "sha256": "7211c0bc10e201e97f2f8729e0c096a2a39e065f0e6c8e4c76728b03e4068199"
+  },
+  {
+   "path": "server/webclient/headless/sim/door-tracker.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 3495,
+   "sha256": "b27b550a03edc253257db986cc6a1aa5ae0669adf2585409af9ce00054396ea9"
+  },
+  {
+   "path": "server/webclient/headless/sim/doors.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 3609,
+   "sha256": "a86aa345cd18ad08e284217a3c9ed8ab8f7762e4d5173336fe2c8137d463edf0"
+  },
+  {
+   "path": "server/webclient/headless/sim/dragon-slayer.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 3083,
+   "sha256": "77115dfbe4cfc4476d10070e46cd96da14031eda77372d3a0a9969c18cb3e1c4"
+  },
+  {
+   "path": "server/webclient/headless/sim/druidic-ritual.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 44115,
+   "sha256": "b2163267b3f0a94e5b1d2949afff460e3d4a4df474e432f8e117154a7c6f2ca9"
+  },
+  {
+   "path": "server/webclient/headless/sim/harness.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 17724,
+   "sha256": "ce89de79f4f48d41766bd89d473102fdabb158f936499084a8fd1d6228bad408"
+  },
+  {
+   "path": "server/webclient/headless/sim/interaction-ack.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 33848,
+   "sha256": "f3f2950294af89e3bb0b3e7c6f3fb218751b29042f869508cdc6174f267ffccd"
+  },
+  {
+   "path": "server/webclient/headless/sim/levels.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2231,
+   "sha256": "55a159466bf0316512b2eadf7ae02744c69326c4e70d293407c4e9fbd4267565"
+  },
+  {
+   "path": "server/webclient/headless/sim/levelup-modal.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5798,
+   "sha256": "69f9724725107eae2f3778d7a7de1476494f0c445848a41cb64a57e084bde5a3"
+  },
+  {
+   "path": "server/webclient/headless/sim/loc-scene.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 19180,
+   "sha256": "3b761ac1df6d981c301fed7eb28103cba2f8eb3b9feb00a325f7d0c9a602b775"
+  },
+  {
+   "path": "server/webclient/headless/sim/locscene-wired.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 7217,
+   "sha256": "1aad59b314e98e67285c76c1af15947cb9e5f482599a69607ad5f9377f5c26fe"
+  },
+  {
+   "path": "server/webclient/headless/sim/magic-methods.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 7074,
+   "sha256": "308e6dbd7d78a902fabdc67eee24370a72339e0eb9abce6e3fdb17ac2e8944be"
+  },
+  {
+   "path": "server/webclient/headless/sim/mapload.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5497,
+   "sha256": "6f19ddd30c6019517209dc8d3e989dda70dac23dbf4bd15098a24998180ac167"
+  },
+  {
+   "path": "server/webclient/headless/sim/mltravel-teleport.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 12879,
+   "sha256": "cbe897dbd9016ddd80eb3cceee6917250aee5d8a0da35890697eec90a16d676d"
+  },
+  {
+   "path": "server/webclient/headless/sim/mltravel.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 20050,
+   "sha256": "5cf85d6a6feafccd02878e8d3728b3c5ba0e8618a12d70bfc9f33836938ac37d"
+  },
+  {
+   "path": "server/webclient/headless/sim/nav-travel.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 12012,
+   "sha256": "96610b25249e157dbee069a7bcc8d81ac8d9aacd2a72a6ad7b58843da181c17e"
+  },
+  {
+   "path": "server/webclient/headless/sim/navgrid-allstrata-geo.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 8271,
+   "sha256": "c51f14dc5c8965548c742ef0e551d833945436b8f86adb395e183a42ed78f77c"
+  },
+  {
+   "path": "server/webclient/headless/sim/navgrid-coverage.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 7144,
+   "sha256": "8e05c06bd1d9d4a24b7c061f65bb4166a85897634a502d53485321eb624c3d4c"
+  },
+  {
+   "path": "server/webclient/headless/sim/npc-scene.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 26674,
+   "sha256": "d52fc4addcd4966689c2cbd1e32c318c73cc02d3f067de973d2666edc10c59be"
+  },
+  {
+   "path": "server/webclient/headless/sim/pathfinder-trap.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 6924,
+   "sha256": "e0afaa1b9351696523923312c63638cbb4624cbb26d0e6db1f24db65b7be2a97"
+  },
+  {
+   "path": "server/webclient/headless/sim/portals-data.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 2527,
+   "sha256": "ee7ab8136d1e5f5ed8ce161df3beaab934c2008739efbe3378d107fd2cf60c8c"
+  },
+  {
+   "path": "server/webclient/headless/sim/protocol.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 7897,
+   "sha256": "f6b6a8007338480a1301164021c36774df881286160a9df5b9e68a3c8fa49f37"
+  },
+  {
+   "path": "server/webclient/headless/sim/protocol.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 32205,
+   "sha256": "1224ddc67060c6a4f620293ec64d76e2de45cc6ef744c1cbc7a049be9133134d"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-death-dice.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 11462,
+   "sha256": "78b80db4396180ab266b2c1b10c8c1a92bc3c32208ac84c03643882f48ac11a1"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-death-relaunch.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 29868,
+   "sha256": "782b27a33ecf576c885a8c127aef9765e95eec26e359e1a37c690517bc6c8820"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-death-sim.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 15994,
+   "sha256": "e11ae49403e9485e9ccac581937666f0cad66f4b2e6faca13c857c48fccc1c2b"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-death.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 38375,
+   "sha256": "7642ccbdee1a87ef86f141745b9c51dceb60022765be85f62ca8fca8f63d3476"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-drift-dp-troll.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 6549,
+   "sha256": "afb67850ac9175dc7b9c6207dd4b6f0b78f3c988f8720ea52bf6c88a51c71a43"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-drift.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 4078,
+   "sha256": "72fe35094f776aa256de744adca586b86fbebeb98914efffc5c023da8c8c46c0"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-drift.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 13447,
+   "sha256": "e1f0e18bc9002962f6eb5ce3c34fe2f4d4b503059794ecf17ae06c2a3d367c15"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-lostcity.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 49646,
+   "sha256": "aa2d1e230be728303f7946ad1fa306392ee37084c2dd9a9ee88406a0c115e7e2"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-state.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 38690,
+   "sha256": "516ecf0d937b4e2565850aec0b5949c51bdd8c6dd13a5b866f4ae346127e3853"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-supplies-sim.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 14637,
+   "sha256": "8b2759ce5c1404fbc63133e869cd3eb1cf35852b1c08af76ca224b07056389ce"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-supplies.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 7578,
+   "sha256": "dbd2aab564c9b77f1390af7f8cd06cb5dad4f68bc27ad2ef5a8d3c42693fb21a"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-troll-geo.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 9153,
+   "sha256": "aefb66ad63f98617e6645ba419219acb481a6dc4b6e03b6a15c85cdcfdd700b1"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest-troll.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 29190,
+   "sha256": "ff4bffae71e199af45cb2be801cb514b405c718cfa057531abda9d8bcb9a81d4"
+  },
+  {
+   "path": "server/webclient/headless/sim/quest.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 9377,
+   "sha256": "dbeed2c09dd573a40b0da62f6fcb6b7f19686b635a0a2ff1e2443808334608cb"
+  },
+  {
+   "path": "server/webclient/headless/sim/ranged-kit.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 15718,
+   "sha256": "346cd89958d9fe29bb8ae07e860fd0dd795eba1ade94d1a4583e4e10bcf35ceb"
+  },
+  {
+   "path": "server/webclient/headless/sim/rc-rm-recover.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 17347,
+   "sha256": "d0012f4197ca7b02e722a44b18c846fef143281fd1427cda7e27ded5d40de934"
+  },
+  {
+   "path": "server/webclient/headless/sim/README.md",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 7681,
+   "sha256": "4e0470892127bcf8810c95111071169cc1d0d37dc916bf31912e613031278a1c"
+  },
+  {
+   "path": "server/webclient/headless/sim/route-danger-geo.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 14403,
+   "sha256": "f014a0a2767d4e95d643cc7f839b9920e3f6981bc16fb992ff9d6a15a8abbe01"
+  },
+  {
+   "path": "server/webclient/headless/sim/run-tests.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 19725,
+   "sha256": "bfa2f76bf1445ccefb9fe2d196eff03396899ebc0466d376b495248ce8cac07b"
+  },
+  {
+   "path": "server/webclient/headless/sim/shop-fidelity.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 12091,
+   "sha256": "16142c5ad7124040fce6af60a881d750fff8302e9b54f03e0e347cbc7f801ad5"
+  },
+  {
+   "path": "server/webclient/headless/sim/skilling-actions.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 38729,
+   "sha256": "6b10a3de851725e8552cab2db6ffffae14ed8d6438d02ad1372aefa8c5905342"
+  },
+  {
+   "path": "server/webclient/headless/sim/skilling-tables.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 42886,
+   "sha256": "0c8d645180593c2282de53209c20e998c51c6ac563f9971b59906d6aa9b82bb1"
+  },
+  {
+   "path": "server/webclient/headless/sim/skills.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 59927,
+   "sha256": "92e09d91fa6d1578ecba8dfcd726a8de6eab46a7e93557f0c1b28204275a445e"
+  },
+  {
+   "path": "server/webclient/headless/sim/teleports.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 10636,
+   "sha256": "dec498fb2c664ba5802a8f525bd79d5febfd5671e638dce6f83b0da21cf480a9"
+  },
+  {
+   "path": "server/webclient/headless/sim/tick.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5085,
+   "sha256": "6ce125f8c54a59b6af235832a65985ff76976d05a6d3ca4234b7a120d9c97737"
+  },
+  {
+   "path": "server/webclient/headless/sim/wander-npc.test.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 3407,
+   "sha256": "fa33f78e003d418deefcdbff204fe0011cf677b0eff98281da2024fc996a185e"
+  },
+  {
+   "path": "server/webclient/headless/sim/world.test.ts",
+   "component": "navgrid",
+   "kind": "new",
+   "source": "core",
+   "bytes": 13972,
+   "sha256": "b41aef2528e0049c41d4bd75b05ef381d61514af38c651f699ed98326557c39b"
+  },
+  {
+   "path": "server/webclient/headless/sim/world.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 24331,
+   "sha256": "34ff37289c86d505561981e4f66222774a465ce084ad6858715f24dcb037f2e2"
+  },
+  {
+   "path": "server/webclient/headless/skilling-tables.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 63753,
+   "sha256": "a7d1f989563699129fb04fd51f1679da33bcb94567ea27280774fd02421b8d88"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/core.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 107155,
+   "sha256": "8cd730cc2840256c59eec12e347c3617f181b696eafbf6013f753ae529fb6b2d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/leaf-walls.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 8474,
+   "sha256": "5b364b2e00e3895e4cd1db04152236374e7358c1eed5805d215dba2f62b07129"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/g1-clock.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 13164,
+   "sha256": "05ead11d0d1fa40883b37a03008be3ddf7bcd897b8d2386b382f650787775236"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/g1-mining.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 6329,
+   "sha256": "926c80aa2aef15e388e8c33ef475934a7f01b1531bd8346cf8fcae0047212a8e"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/k-live.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1931,
+   "sha256": "38ce2deb8f4c9eff340a5e429c543a83000c6016e5766dfb570a78fc2d580c97"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/k-mcannon-quest.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 29246,
+   "sha256": "5d75689d3274169050445f863b820267bb78547dd5ca0a40a90d81ebddfedc1a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/legends/common.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 9731,
+   "sha256": "2bcec09679cae2c516cd4e666a527eb6bc471d973f57229298646a59ff0df5d4"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/legends/kits.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4912,
+   "sha256": "9e150818cfb9ec8505d545f0539e614bd2de296e14680df94842209d60c2b586"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/legends/run-legends.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 6177,
+   "sha256": "1c1c34c885538245d7c37fc9f0f05b45d12e21fc85beb9c28f3df700a4fbd71a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/legends/run-legends.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 8244,
+   "sha256": "fe186a4d4c7c598165b05d78e1b1a30b09f5e90c1fac5359e3047e03cece86df"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/legends/seg-a.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 52995,
+   "sha256": "ba2c992448ca6d2ad3b0e1b48eee8de594e8af4d9086e3c85856ba6f8e78834f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/legends/seg-b.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 76715,
+   "sha256": "b66537c2646daa50f9c21699edce38a2ab8215e8414376a7c4f860d437d92bbc"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/legends/seg-c.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 69780,
+   "sha256": "a753c1520778badbb8f7ada4d2754c9976a75b276e8e22d02555fbeaa680323d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/legends/seg-d.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 49402,
+   "sha256": "7338b455c7238918b4127785f23217797be3314d99911ef76e783829dcea4ec8"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/mm-puzzle.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5007,
+   "sha256": "8b4e8e0f01815dcb551d22edab9dbeb36ba08857ee2d69d25195d0ece5f819a8"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/p1-common.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4313,
+   "sha256": "3ddd61ff7b89a8026390d195b94b39bdbe95824e43917fad54b777c786058520"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/p1-firemaking.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 10763,
+   "sha256": "5cefb7380e6e7b14244d164c9807d9ab1fceb63c42df8b0c5f246522d448abf1"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-charge.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3742,
+   "sha256": "daea56a7b68eee68b421d445e02ef4d36af264833a3ba9594300d7117aefc943"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-doric.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 8491,
+   "sha256": "e53c788c4e786f8eb993c93bc89ab1cf1d870917998dd349396fb7cbe9f86dcd"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-druidic.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 16204,
+   "sha256": "5eb65a688d4c4149604a12e2ad1fdf9ccba4ebc2f1d48c90e5bc7bba23e9faa2"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-grandtree.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 38769,
+   "sha256": "4a6d1b106869c003339d03d222efe4eb10b4d3910565b6983e7501347ebbe3a5"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-imp.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 7778,
+   "sha256": "f714c4e69cba0c178c8be0728bca60e67a0273000dbcc2f0dcf4011893063d21"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 75838,
+   "sha256": "c6909b0aa7e712bdb08b96f3f0303899f0c55527976c48ad1ef80b14815d2c08"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-magearena.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 14310,
+   "sha256": "0ced8a1a319ac65d483e07526b555937d530dc869b74b54049e01dcb7363d0db"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-monkeymadness.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 129518,
+   "sha256": "f23fcb717df84c6367ff9bfc5b5bd50399db3aac57e885ba09be250d253ee9c0"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-seaslug.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 26711,
+   "sha256": "252a125bcb6f5b824bcdadc2b84761edfe3fa2131ceabcbe4c92480ef2d73fda"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-shilo.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 77837,
+   "sha256": "c2969cd1dc4637366d2b0ed6ab69daaa4486ea4e59de5a259b77f9d45ed5764f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-treegnome.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 20108,
+   "sha256": "aa39bc3fd61a4cff29a67a6a885308683c3cebcae59b60beb537f4a98a0b5a54"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-waterfall.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 24758,
+   "sha256": "34640dc131aff6e55200c518d9215e080e0e0ff5995ac66fb20827605f8f9336"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/q-witchhouse.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 26578,
+   "sha256": "300f54842d3eca187481e5f3c05995197c38825ca6d96a7b4774d42f5d252623"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/ar-launch.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5791,
+   "sha256": "54025334e33aef29b25fbab045d39472b2bf5ae7b1dc7296e783b5bb340a85d5"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/ar-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 27389,
+   "sha256": "191f210409aca2e72f7e8fde53539b441e83d6bbdfbe3d7f2a69908d02a74ddb"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/q-biohazard.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 49738,
+   "sha256": "e4b559ea14ebcb473eb6f626e7606eeca623b4100e083f5fbb7055654527e635"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/q-clock-tower.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 13917,
+   "sha256": "be5bbe264d60c4af69f7c57c5138824381f02d4155cfc7c9395163578272e86f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/q-fight-arena.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 23040,
+   "sha256": "f8d1d2788d7adf7970313cfda6960d7b2e204576926c4c9608e010fb65693bb6"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/q-hazeel-cult.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 12996,
+   "sha256": "6b8ef7b79fe043ad01ce7d4a7951169907514af21a516d2559eaa7076d534256"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/q-observatory.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 11117,
+   "sha256": "b13867147d8c019d2d4b38fb7ed816079c53493582d6e44b515f0bc28ddc95f7"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/q-plague-city.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 23914,
+   "sha256": "7846d34ed4b0b2832cca08a288c84c7a425c76a1353dc6fc30c0851710133873"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/q-sheep-herder.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 20874,
+   "sha256": "f9482f8c28cf4bee5e0c4d8b9077fa1a0fdb64102c2147b089a2d9587d05322c"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/q-tribal-totem.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 13509,
+   "sha256": "164f866b0bd4fde4a9664eafb28793679eebab90bd0fb9520f6cdde7f30748b9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-biohazard.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1301,
+   "sha256": "e5aefd105b660bc99b16438969aba04e4a202d06daa241e107e9cce2406f8e3c"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-biohazard.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 751,
+   "sha256": "981645377610e9542bd4fc165d8fa4d09d0a258f1a1618d6caddde47eca3c911"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-clock-tower.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1014,
+   "sha256": "ab20d26e6a057002239f066b0260c815a3b7cd24456480ea47728137bf382a5c"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-clock-tower.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 691,
+   "sha256": "415c71f4c451d56addcd1fb4e471043ad14f77d8e6d763abc2848b84073fb741"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-fight-arena.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1153,
+   "sha256": "07102433664750e2b5de50bde49d52fcf8d2df048a31e2a00b25e40979db2c23"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-fight-arena.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "template",
+   "bytes": 717,
+   "sha256": "d29c390e45ca2dec13593f18665c9b3f5ec8263ebe59af03b5cc1360c067f392"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-hazeel-cult.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1000,
+   "sha256": "5edd1ff0c1102a73628e05bd1c83cf3e7380ba8881da2b7ffe56b662b5b3c615"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-hazeel-cult.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 648,
+   "sha256": "b9ee6e08d37f66d2649a6a50344e177af02b7f38e5c317042b956c3f659f64ba"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-observatory.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1056,
+   "sha256": "4f7cedac6f743cd08666a7f711a010122465ae4d660deb26af335876f0b914ef"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-observatory.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 651,
+   "sha256": "d7e88066aca4736340ef0ec8ca661dc427a34f323594633f305864a428406506"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-plague-city.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1316,
+   "sha256": "061af322a566e75ea73b06b3c57255a6ede98ab8ce09cfa65935ab37fd6bd309"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-plague-city.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 497,
+   "sha256": "b35c05213e0dafde89280a44845023935a5248818714a8f0c5567b572d0aac1a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-sheep-herder.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 935,
+   "sha256": "3934784c1594fa49c64d6a673459f525050ab116f8635c288276ba845f5cd0e4"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-sheep-herder.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 538,
+   "sha256": "8de377d65294b23c308f209b9abd9bd93fa00f5d71c1a2deddaae74896132ee9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-tribal-totem.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1032,
+   "sha256": "8bfe6f345b8d3671e33ce50389082e788606a68db665ffa8e67063ea7910159a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/ardougne/run-tribal-totem.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 830,
+   "sha256": "7402e6b3201b81162fe4646cb716b3f9b151996532460a738da075192c19921b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/fa-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 25381,
+   "sha256": "00453bfb60c73650f34a2c0fa0b628b323ebbe4845131c20d411763bdaf76969"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/fa2-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 7276,
+   "sha256": "260ecd175b3e00cd2b52a6b8f7523d350448d93e7d54f704eab6e581e27f7cfd"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/fe-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 11585,
+   "sha256": "d067d842a62371175bd4b46465022d679a8245271f2da90ccc12a7f32ce63647"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/q-cooks-assistant.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2969,
+   "sha256": "cfd41cd741d2e4e497bdc4d9c00c1c57cfe0f46b7d000d6cfb652e2e1c5e24e9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/q-demon-slayer.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 23612,
+   "sha256": "52d19359c99439848281ddd51f622393fa857d8c3f593180b6cfd94d51822733"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/q-ernest-the-chicken.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 15031,
+   "sha256": "048a265a15af01edfca63326ce927e076e8b256f1a59cac90f700c237145219c"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/q-gertrudes-cat.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 16824,
+   "sha256": "c544dcc805ff8930cd038aaf90fce41d734bfa6e0096fa99a4a1fb79d884c33f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/q-restless-ghost.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 10052,
+   "sha256": "96e3387af116acd74eb867d06e29d88b905f2accac21c78f78c3d83995e79329"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/q-romeo-juliet.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 13510,
+   "sha256": "021c5731bde04df16244bb240baea9ac1ad8d4ca52157a5418a560742a497031"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/q-sheep-shearer.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3168,
+   "sha256": "3a63387b822dd6d9f27db773836f42f530cb7db681c018cb22c948febc44d5c1"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/q-vampire-slayer.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 11994,
+   "sha256": "c5e8f2765f58fb07cf64ffa6645987b604954ae4f9fa56499716aa3b79342ab9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-cooks-assistant.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1269,
+   "sha256": "c326a6fdb2c1bbdade21e47c715c9eb70b56720c69a9271611498b7b52c180f5"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-cooks-assistant.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 449,
+   "sha256": "ba3fc14c36f745f23751f1d733d27ee65a0683b327590820518bce8ef9d58aa6"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-demon-slayer.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2436,
+   "sha256": "b06f478b0b963bc9868e77d859dc480a50eef759e7beb5f549786940242a4e48"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-demon-slayer.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2547,
+   "sha256": "86492f717b278dd2157fed2f28edc90da37ae8a0b9bee73d72f97a5aa04ee477"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-ernest-the-chicken.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2904,
+   "sha256": "65f3cc132fafd6a1b0bd6a7530c94b94c385ec672cd687c2258e485e791e165c"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-ernest-the-chicken.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1152,
+   "sha256": "a81ece2238c0451c42f7e2d83322e83efc66be7f594d089fdfd685ec26b4622b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-gertrudes-cat.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2328,
+   "sha256": "3532ececc8d43522bbeb1f3d3cbb3ba5abcd6b5fecc801010816cd41e101ee56"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-gertrudes-cat.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 646,
+   "sha256": "d430a0b78455a6950166be1ecc0f6eee65c03e07a35bbc489bbdf0f98984b97d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-restless-ghost.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1616,
+   "sha256": "021e4e1c3e3d4af7fb006d14874e01d3c1e09ceee1460f7dc6c4ad87119799c8"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-restless-ghost.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 618,
+   "sha256": "7fdf2044015335974c3d51751dddc1a137c8423801054128eb073bd9867ea202"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-romeo-juliet.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1851,
+   "sha256": "3b54dd2703581cc7277b66da0518a9aa50a19aa45af74e0a9e995525cb4d74fd"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-romeo-juliet.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 645,
+   "sha256": "9811d1fabadef9641ae46777cadb11db58d8bacf011418aff305e9ef014921ad"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-sheep-shearer.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1170,
+   "sha256": "6c1033de3a5f776dde8f1291874ead180f361c8976dd225340b86476c191bcd1"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-sheep-shearer.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 431,
+   "sha256": "25132e1c6d2cab31ef8db67e1ebbcfa9eda38a88d7ef12c3442be8fdd9f86834"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-vampire-slayer.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2374,
+   "sha256": "a721db4df2a11202f8f51cccde753a742f6ef3fe710a1d0b89c7112105faeae7"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-a/run-vampire-slayer.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1213,
+   "sha256": "1ba042a084dd145e86d8b9e7d9ed00d81e5b458e3687240b908055de541b57c2"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/fb-launch.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5524,
+   "sha256": "500e10b3285c079c61f1214de6ff4d63e734077fcc2c4475413cb12be15940b9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/fb-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 24392,
+   "sha256": "170133400d04ca80c8ffb79ba099ad6a146a4e87f6fdc4b9ed6ee7e9cbc2858f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/fg-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 7307,
+   "sha256": "37624ef860946fce7db57dc608acb2177782844145c6a54a5e2e49a5d701744c"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/fk-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4297,
+   "sha256": "6f357d69f16f509a9cd5b5309a8bf2dedc037f09a4e24f14c897dbff11183c71"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/q-black-knights-fortress.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 22283,
+   "sha256": "9325f59e4205ff8701d65b4cc80ea4ad0142ff4d01910bc3f207c09844a49cec"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/q-goblin-diplomacy.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 10493,
+   "sha256": "a712aff26e8a82fc63b59b6f17a62ee2f8d205332953fbd48d510c020e51f7d4"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/q-knights-sword.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 19827,
+   "sha256": "1e701b52132cd0b2f494b8662ae3fec56d677ab691e77d25a92f8b6d15d9573d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/q-pirates-treasure.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 23263,
+   "sha256": "b06f526a2949904e53782997a04be5cdb2d56de1fa3c48733e21c83e4f3cd197"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/q-prince-ali-rescue.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 38147,
+   "sha256": "18a60eb95a160be163496494145747109782c99d1672820433a2d216cbfe3ad5"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/q-shield-of-arrav.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 33099,
+   "sha256": "83df5e80373bbe2bb709dc06ea00d9809942752d820b47c98235d369867275e3"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/q-witchs-potion.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5986,
+   "sha256": "d5e6642584b2214e44a35661edde168c610fd3d1df1d5708954e2ede2470573a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-black-knights-fortress.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4025,
+   "sha256": "94faa4839e4c1128f640e1f1f2bb9e4989c5c2ca22fc4b16214cd134a23da680"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-black-knights-fortress.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 972,
+   "sha256": "4660e3b113e1ae444707bf57d3840fcac03eb69de828cfdabe7d7e7bcdcd7ceb"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-goblin-diplomacy.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2962,
+   "sha256": "38559699a7ad6005797102bf3da4d558c93398f074d3df024bdb8e532935b659"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-goblin-diplomacy.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 667,
+   "sha256": "b4b77b3186df1a90a9d22a3a6a4c9c4cb4ff1245d36c60a15ea535cfa3b3ed1b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-knights-sword.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2863,
+   "sha256": "567483529e68d6ea59d00438f2b6b02a95bfec8b4c7fcdc4e8407361797a8db7"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-knights-sword.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 535,
+   "sha256": "4d46ebd740a49aeeaa9e0ab795d706369a79c94f3558595c98c990b2155d693f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-pirates-treasure.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2895,
+   "sha256": "38adefad91a7bd1e36d851483aaeb23d37318d7065aa299fe28f4f2c49664ace"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-pirates-treasure.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 581,
+   "sha256": "885c0248707d3bc6992c870b7eac2d1d489dd3f806338b13f61f60140c964bd7"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-prince-ali-rescue.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2456,
+   "sha256": "0752f70846f68c0e4f161be39292b90732b6858083d7996fb8103d526a402df2"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-prince-ali-rescue.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 596,
+   "sha256": "6d7ec3dff31c05a9a6a6ca80489300141f4a553fa095382b6d66b6d95bc43c1e"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-shield-of-arrav.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3422,
+   "sha256": "389c9ab150c608c947cc3c60715d79f5e2759f920a20fcdcb51409b744ac57d4"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-shield-of-arrav.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5795,
+   "sha256": "e0c7f015e86145be1a1ecbf46b4284e00e8d9c72f07b30d6a27dcbc7d9c93e8a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-witchs-potion.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2012,
+   "sha256": "521ebbcdf15d209c8f66d9bcc2e8f10869c4fa8b9e3075e860198d706e969e1b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/f2p-b/run-witchs-potion.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 612,
+   "sha256": "9ac60064d7aeae1eec753b017a9143b2da77af3e408172d00abcb43cac9bac67"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/glory-wild.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2357,
+   "sha256": "d48cdbb168c957938fa548613732a70f9b9663e974462d8bc3ff1c2898604dc1"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/journal.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5134,
+   "sha256": "a7a49b893161059193adda1c993dd6ce887f55591b1b8d0605c58d41d7a07d69"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/ka-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 39991,
+   "sha256": "aef8faec88c6ce16c8d0a7f23f9c12b6940406cad9c672f122958653c7d94d2a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/q-elemental-workshop.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 19555,
+   "sha256": "952171650d836c6cd26bc9ceb055a0164e20b0a37fc67e1e53fb7e41a4c735ef"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/q-fishing-contest.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 11211,
+   "sha256": "ee20055d3f0d0b451cac22fff6e9899a4447bf1cb74dbbc2e4508876f8269ae1"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/q-holy-grail.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 30645,
+   "sha256": "33bf1262883e771ec1f265587621476d9eb751ee825293f4c1f28c5e698f2d8d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/q-merlins-crystal.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 21464,
+   "sha256": "106a08c01f1fac191c13e49f04f03c5ebaf7a1a072c72a1559f38d697bbf3165"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/q-monks-friend.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 7335,
+   "sha256": "396a33c77179cdfd43e949e7a195d5f6a831b1d7de3ad480918dcd27de88dc40"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/q-murder-mystery.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 17532,
+   "sha256": "f6b311f746c94095b196ad6d85e0de66bccc93149125363ef1e3788def33edff"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/q-scorpion-catcher.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 15394,
+   "sha256": "2d0cdc6bcfba78dd0b388b8bbc1f833024018355e0e46876e35067e58f063172"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-elemental-workshop.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2569,
+   "sha256": "773b5c6c9b70cb2c93109e62543068119fa973990be14831707bfc1ae49c493f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-elemental-workshop.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 750,
+   "sha256": "2a65bffb563f878c1a6e4a76271f53863cf39ee01676342bbaba3be6f2646611"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-fishing-contest.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2165,
+   "sha256": "25bf8e754b55b85345ce6cd989bcb665aebb4e8c3a867b369fc235369e62dfde"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-fishing-contest.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 570,
+   "sha256": "e475d9eff9160272c2300e14c930de212b142a0c2ae210d50f803c5d7f0cc829"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-holy-grail.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4252,
+   "sha256": "a7b6dd4d121b11003ada02171febfe41d9d429acf8f806e291130e8d19ebe92b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-holy-grail.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1666,
+   "sha256": "18621575d61f5b8b9db80e51236d37e165c8bdda9fe1c43c9674c7ce95cbd55e"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-merlins-crystal.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3512,
+   "sha256": "06b1b04c951c32328b3b4e2e22d28846715f6fa2b0565c1286f466f829da385e"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-merlins-crystal.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 692,
+   "sha256": "eeb48b2ecd9003fb1edbc6f59b48de4823381007b914b29672bba40d703fa604"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-monks-friend.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2264,
+   "sha256": "94998230fda70d9fc2c39ee09d5b312d136b415b601b58991e76f168f0d7a658"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-monks-friend.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 651,
+   "sha256": "dd55ce13428c159568cdff2bede555acbcbb99fcfe26f8558dc860d578865d39"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-murder-mystery.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2350,
+   "sha256": "9c80c5f0393fa687abd2b0841f15925a626c243da3769dac8c81a1dd720d2161"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-murder-mystery.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 578,
+   "sha256": "eaae5daf0745d1e7e1cccaf0de0f5ca6f64f92ddbaaeb061965124721c045e46"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-scorpion-catcher.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2730,
+   "sha256": "0070229cdc8d1bb20bf8ab058b061aa4adab5451e59016fb399f6295f43eaccc"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/kandarin/run-scorpion-catcher.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1049,
+   "sha256": "60d0225d9955620988b05f9b6bf8ea8ae30760c30b0ad9950892a915f5108c22"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/mo-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 27412,
+   "sha256": "61d477047854964cff91f60a88712fe9f623dca74ef532a5813ffcc4dbb96cd3"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/q-haunted-mine.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 51236,
+   "sha256": "3f1a717123e84d09fd963b64f38f0eb1391d91da91c1de3844a2016a1b28e273"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/q-in-search-of-the-myreque.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 23629,
+   "sha256": "066e68a7e1f4fa00f42572fa787b08c5567ad33f5c0ea8d4da38478e221218a9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/q-nature-spirit.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 27312,
+   "sha256": "b1306469fcb0dba48857293648c698f390a12bb8f8d8be42ffe5504dd6ff8b15"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/q-priest-in-peril.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 23707,
+   "sha256": "57e826421d7a2fb364cf200a30b223e298be0ddfee798c3d6e3bb0b3b1afd5ff"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/q-shades-of-mortton.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 35389,
+   "sha256": "3affff2021d6d5778f4ff5c1412273a09fe1d5fc4ffc82e8b95e0da3585d8bc8"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-haunted-mine.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1844,
+   "sha256": "cf888d97b6546ede8de39db218885c59375346cde67c3d49f8317017c5b98b15"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-haunted-mine.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 824,
+   "sha256": "a5090661cc90c775c4413fa5ed82e9bcdee672c3ca8d89a3192c064045ef2454"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-in-search-of-the-myreque.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1945,
+   "sha256": "d6791fff38f8bc8c29799e1c1210fc37847f4db296113417fe36d74ee7dc93fc"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-in-search-of-the-myreque.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1202,
+   "sha256": "350eea3510a462bdd0073007c1ebc137a3347c1c7c29f5c57e9db0263c72fd7f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-nature-spirit.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2152,
+   "sha256": "e12eb10b67f347edd5b92db2fc92ad6deb514c39753c40a38071c2c814f82617"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-nature-spirit.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1378,
+   "sha256": "dd883dd7b7f9196c4ead676f80d20121b450eabc66ee09982172f087a3ba3226"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-priest-in-peril.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2466,
+   "sha256": "8dd79c8b79ca443786c86737526fe1cfd909fff5a7fd763d707606ef0c570c12"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-priest-in-peril.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1656,
+   "sha256": "811366c82b88689f1fea4e871cd334fedbba830d1b0c81a3abc8c1ea82c5d1ac"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-shades-of-mortton.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2485,
+   "sha256": "9916413c27e97877731757ede39b51bfe5f6f0dd2e9e7bd6de5cb5165c0c3856"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/morytania/run-shades-of-mortton.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 899,
+   "sha256": "6ae61336361df0a760050ba0ba1f025b46522cafadbab0e4e40bb4f1664d0b65"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/noglory.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5179,
+   "sha256": "bffef84a0d1098207c7a28cdaafb7178ac615d4a12e6af698b1f6c67579f2609"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/rebuild/q-death-plateau.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 31796,
+   "sha256": "01fd20213e0b79c86cc7de9085844736b1cdabb1a876e142c60ab7923cc6b151"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/rebuild/q-rune-mysteries.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 10728,
+   "sha256": "30bbf2b169d27ad47e60e823a12cddbb3251e58c2f50de32893b194898fa299d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/rebuild/rb-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 9965,
+   "sha256": "02a801509e0079f1e77244cf6b62c28e587abd21b46ffce0befbfa1ed83f1b94"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/rebuild/run-death-plateau.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2755,
+   "sha256": "2bd9bf388c13ad845b747014535101d378a6312617d446dde68f564fff769ef9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/rebuild/run-death-plateau.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2328,
+   "sha256": "9d0ed9d19e9c4fb5416bb314da71ebf41f4e45dd476e639200cb1cacb1a03a68"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/rebuild/run-rune-mysteries.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1759,
+   "sha256": "1e5507cf2d2c2a0f55dd99bd32335f9e438fec69939ff9de304273931ab6a1a9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/rebuild/run-rune-mysteries.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 723,
+   "sha256": "86e2f918d8115eec2b50abecc06f1e3fdf64a4c60c8b97af329f56421e42cbd3"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/route/drops.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 16029,
+   "sha256": "e89ef9b61154458ea2e3ea63bf9aa02e024716062ccfcacba15a0b925daa2feb"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/route/route-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 95908,
+   "sha256": "14c103f3b7f35e19e173cf517d6669a05899d08c1078c85da981aedd9b8f00d7"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/launch-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 6532,
+   "sha256": "ed955322a3e303d96326b2ba9bab224be2ca55c5bb147b17ca552389732765f7"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/q-big-chompy-bird-hunting.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 36871,
+   "sha256": "25ee16202df6b4245a741eeceaef94471d239ea8c4555934b22ed402e1861609"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/q-tai-bwo-wannai-trio.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 38640,
+   "sha256": "4cf847d5ce26ea7f6fa823a9e7960ef143fa8a1e228542d494e91ac810de8366"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/q-temple-of-ikov.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 35958,
+   "sha256": "fa0b08a1a6c3a6cb741602b4e7f9e9852c20f64b6d3a94d25bb2a67ece3bf646"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/q-the-digsite.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 40723,
+   "sha256": "359cde7bda5ced0b3542356e748c877ed111066000f88ab7211eb37e2a3fb7e3"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/q-the-tourist-trap.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 55862,
+   "sha256": "752f6980b64db8f74ad70174bbe80d78e323ce4543d0c820fc6dce183cf744fc"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-big-chompy-bird-hunting.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3553,
+   "sha256": "10a96c3f83f3a7a97277a44b712298bf5b39fcd6dde7a5e7b9522e8e6417c3f6"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-big-chompy-bird-hunting.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1209,
+   "sha256": "53d1161963f428670e69b2bc6d939b1ff9cd9354d163b49a880050af6410c378"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-tai-bwo-wannai-trio.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3237,
+   "sha256": "061475c1fecd20f61130d55d6568fa317ff0c98b62e2e6b6c7bf689c3d5c1d15"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-tai-bwo-wannai-trio.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1061,
+   "sha256": "da4cd93325e9922d49830babc9230c512b92c250b1fdf29620aa69ec2e03b0c5"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-temple-of-ikov.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3484,
+   "sha256": "a0b1e9f8c907270ac794a649d200461dd8eefb1908b563bf58a15bf74017a6d8"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-temple-of-ikov.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 982,
+   "sha256": "e10e42cd7f31f25b31d4c71131e925f91d7b0cd0e45f362c292e0b4a9d72f758"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-the-digsite.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2788,
+   "sha256": "3fad567d8ed4c8cba46a1f0b8d0ecb9fcecc2eae002efb2595c84f944ccce480"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-the-digsite.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 899,
+   "sha256": "1bcd3896925ddd4ca8c25faa95a2e6ed3cfd9661147f1d560c433ba43b3e3c66"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-the-tourist-trap.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3106,
+   "sha256": "12f4f72f2fc6ebcba6485baa21835a7db05c1c5e3d1cfe18c51e84930e6a0d8c"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/run-the-tourist-trap.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 967,
+   "sha256": "9c42b563985e3020e49b46b00a8adf446d239b244273e10ddfcd1423b4a47881"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/south/south-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 12004,
+   "sha256": "ac53c77bc8347ccc75a183cb2e859911c4867ecd02e8915d6d4785ded3cbd044"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/q-dragon-slayer.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 38042,
+   "sha256": "2df90f1af9ed425485575ba76868e288b9167b9743e3476ea43c0336a404997f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/q-family-crest.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 57505,
+   "sha256": "ded9c1d27b3ffa547e734aaee964ad94f08fcb9e094a1f35dec4c630217ce9cf"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/q-heros-quest.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 79689,
+   "sha256": "492be563813bc57482916a096d2351e85988990b1129acdc3eb64045ddf060e0"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/run-dragon-slayer.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2292,
+   "sha256": "fd761f2815a340db79e850b2b1e4ca28ad1c247fa4b0280352f1e239dbb37397"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/run-dragon-slayer.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4298,
+   "sha256": "cf38f80247497ae21fcd55e71d7672a0c17ac840bdcf912bc0ba0218cdb1545f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/run-family-crest.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1741,
+   "sha256": "000843aa8681b7687c9a0c14b40dde82fc5755b7048fa54a3d93fc26718167c4"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/run-family-crest.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2595,
+   "sha256": "213ac773852623894c777998d7bfe7dbcc446b7e3a462db44a488b14aa18bc55"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/run-heros-quest.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3588,
+   "sha256": "3b9e3ceb1f66e25fa33f0899c68301d40f68349ca9373f16fdfe48d4fc16f726"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/run-heros-quest.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 8585,
+   "sha256": "9afc485aa39a9da9252af590e94908c22effe2d909042995b3fbced9d693d499"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/sp-launch.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5493,
+   "sha256": "3fd80d839fa2fcdbc4d9af707dc45a1d23fc86cd4d53608606c7c9640fdc36bb"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/spine/sp-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 40931,
+   "sha256": "f6a2a1f5b5f3c0ecdf97d4770a219cf0ff7e3674cbaee4520a1bfa4a99cb408d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/launch-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 6638,
+   "sha256": "fad0968ab8fea79b542b2ca3248aa8fe15c0833a3c4c3b1a0cdebece956c4dfd"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/lib-troll.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 15381,
+   "sha256": "1d83adb49284c277ff9578c2913080e744d99d71864055e24cf44f286ef3b397"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/q-barcrawl.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 25198,
+   "sha256": "335debb23d407e2fb7591974b018e673080564e8a279381cf384bd9ff4353051"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/q-eadgar.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 47072,
+   "sha256": "542f3c0e779c572b553cf94502023ed07f90cd8251599cd5d973895ea9e4c783"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/q-fremennik.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 65713,
+   "sha256": "c273150694850fbee4acfa3617c486d0b5b13583c524c12c3a04147490fefe09"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/q-horror.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 27697,
+   "sha256": "a5b5dd2ca8133bfdf319328e0a90ba7a09874b25a19b1045cf93544ed7ed4bac"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/q-romance.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 15220,
+   "sha256": "a9655b19b453150ec672f2db6994bcdd9a456df822046b15026a8324797a5332"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/q-throne.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 34661,
+   "sha256": "0a81ca39d8e51777f5ae5da06e454faafc2f6c4c09a0fe70e447462bc12b2fa2"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-barcrawl.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1725,
+   "sha256": "105f141cab98c4de8decc5fd57cc2b741ff9066033b4fa3f99318c01a470fcd5"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-barcrawl.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1335,
+   "sha256": "8809a1289850ddb0fc6cefe7a8f48a7b1aaf4acb06c4180f71e7657122264a1b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-eadgar.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2516,
+   "sha256": "e2a5df0ce398551689c979c1a84a71ee216cc97812ca1eead213a4a47dc6d0c7"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-eadgar.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4443,
+   "sha256": "c4227bc600e04280007ac9f2f5405278d0f906f81141b5d726e96a2245f0df83"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-fremennik.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2768,
+   "sha256": "33be2a7055f92ff14721e03b2770a425a133619891f5572c03c3a63e468ee9a6"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-fremennik.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4156,
+   "sha256": "148d01a6107e56d069cf08febc967612bba133bbed1dfda65f638d80dc3682f3"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-horror.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2036,
+   "sha256": "cd974bb14917255b94896b964457002c444d52898f5a7b655c29b31186d977f2"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-horror.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2594,
+   "sha256": "b72305a49603bbf48cdb6a757da6411cbc4ab6e7323deca899fafea09e37c5d2"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-romance.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1642,
+   "sha256": "af730367dc934373a887f4d26218816bb44e562e86f7cebd1cc15b498685e98c"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-romance.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2193,
+   "sha256": "84127a143c793b774f95fa0c6ca5bc79dfb5ab2a48ed8c145d216ac15865e71b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-throne.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2354,
+   "sha256": "5ab6dc26908d39afcf001b4267e57ae7025a4eb4fe6bc7ed3210f0af09da74bd"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/run-throne.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2271,
+   "sha256": "65a9509480fa6bb032b2e85637fa3fa53ee33f39515e6c2e4c5cffcaba63d576"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/troll/troll-area.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 12742,
+   "sha256": "03e6fb26dae05ec3687fdf46b8f5ca2e9db9a57ca6cc4bc1a8988e1671325f6f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/q-regicide.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 64228,
+   "sha256": "5581c1ab53281414668079fa86ea0c593b566974630766363d7c1d5dc2b1f666"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/q-underground-pass.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 85650,
+   "sha256": "99b51f4675463240823bc9db5357ac4755a426d3ea25792ab6285b713be8fe88"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/q-watch-tower.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 43419,
+   "sha256": "ce29e979bb1e86bbd60451465e59a9951d6cfecd06ce3e8d025a5e29305624cf"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/run-regicide.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2605,
+   "sha256": "613466eaac6ee1896273ed131a9c7e90f85985b517a6e2796f3bb6651b309b48"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/run-regicide.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3017,
+   "sha256": "de110c2fd3cd9ba08fec9e11112ee35e0ba9b9342337fec5a350261b2040c509"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/run-underground-pass.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2397,
+   "sha256": "9a940b20c00f497862d8e50520d74947882202326387c80cc0fa8eea922160ef"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/run-underground-pass.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3583,
+   "sha256": "717ead041f7df2c6c95cdec00c7a489123920ae66172a2f5dbed9bf8e371c89b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/run-watch-tower.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2712,
+   "sha256": "753321e6304657ae558856e47317517b3e3ca99724d3707cce601d8c2d4d2a08"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/run-watch-tower.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4379,
+   "sha256": "0d07b40a2c6476eaee3e9c4881eb31fe92f7f4d8f5a8839c194b2b6cacdfed45"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/qp/west/we-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 20917,
+   "sha256": "cc057135c42502210b8d3d9188881352e307ec885deaa2c0cd3d99b9d0cceaca"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-doric.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2114,
+   "sha256": "8955d503d1ce6604872f34acabaf98a6d24cce58ff4ac1126cc8503322838f47"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-doric.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4229,
+   "sha256": "11aeac1d91a4b02c5685378e77a76bb3e4a1b0046aae2306394f723f88d8a2c6"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-druidic.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2622,
+   "sha256": "e70d30fd459641d35c46bba49b13431ede2ebd3861f610a3ba654a64fb50b437"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-druidic.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4271,
+   "sha256": "dbd31acacb73a71413d57265ff13edfc1cb8434dbc5d4c906f57bdd899a1430d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-grandtree.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4617,
+   "sha256": "659c6aa7f72eeff66f81418af0fe71003797f0bd0de8117d0b5e7de1a27719c9"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-grandtree.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 7673,
+   "sha256": "91f690b30352210858146287553cdca08a9443dedbf4ac281b4a3db56f0c812f"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-imp.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2079,
+   "sha256": "f7f0870626bc72bae5d81620669cc0a277b303515d4c6a29104607380eafc050"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-imp.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3816,
+   "sha256": "7ef75bfc78ea0dee79835882ea4e93feb8a7769c8cf2de62a90e00453c8ddd6a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-lib.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 32805,
+   "sha256": "6ce18736a8367c1002745ff24c6fa135275e7822d02a6d5abae506f7b9100b23"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-magearena.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5028,
+   "sha256": "efb925dd7b36077541c0f40c8ea75c6bfac07d939e6a0431cd9d18dc37ab4a79"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-magearena.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 7556,
+   "sha256": "80883267b2d2f549a73db10e866d4e29de4cb948048ef484ff9924021dad9859"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-mcannon.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3264,
+   "sha256": "5123515f534349b22130972a0a097be23503ff26201d36454e46f45609c70c61"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-mcannon.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5978,
+   "sha256": "4d7f01fb1fcd691effb51b2c41df44d32ab7237623113655a65bdce61c4a0473"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-monkey-madness.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4356,
+   "sha256": "97b67532366f37b9d5c004fa202c436175cd20488ca8265da9e57ba83aeb0a27"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-monkey-madness.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 12984,
+   "sha256": "ec3f43ed355fa6104e6c8fc1b1e80b514d78ee9fe02d8f0651a6a55195a2421d"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-seaslug.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 1712,
+   "sha256": "3a43a0474ecedd3746d74e1f3141fa241816d1936a7b3158375878e94cc8931e"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-seaslug.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4624,
+   "sha256": "a22adb93243604c4d9bb733d71569fe83952a07e9e5049c6a6da81d658dbe16b"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-shilo.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 6032,
+   "sha256": "1d9864af026182291a588ca6b311eb341a81fd630162390e78b3fe3c2da99d29"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-shilo.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 8140,
+   "sha256": "a55b48e7e8fe0a63978f2cbce83a9c311b0b1f104c600c8663f09e9621a2971e"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-treegnome.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 3218,
+   "sha256": "dbdf2b1f0a1557d530222c2b68846b53f99682ecdb021ffee20cb63c9213f669"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-treegnome.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 5185,
+   "sha256": "aa3ea3a6ae2879095b2d5376118c3faf6df9834c0cbf2f6a4235df269407b676"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-waterfall.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2768,
+   "sha256": "f508d1c7273477742184d137c45bf8c8512e41638bd6cac83e84c3819af442f7"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-waterfall.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 6589,
+   "sha256": "2e7391190887b6c22619f0f48867e8002aa3efdb2e7fc7629389979bbc35af6a"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-witchhouse.share.md",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 2208,
+   "sha256": "f03427ebf8cfc77cf942cba266c88c7828153ec6505805e3914e2c97da82f8dc"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/run-witchhouse.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 4670,
+   "sha256": "67fdf5c29b383bb96d082d69b73d4f70c87f550a0bfe25fb84d3f84d4b566b31"
+  },
+  {
+   "path": "server/webclient/headless/speedrun/legs/tick-ms.ts",
+   "component": "quests",
+   "kind": "new",
+   "source": "qp",
+   "bytes": 723,
+   "sha256": "2b16db1a766936f3bf595b42a7586d9afade4fc700cd9e9a7bad8fb16f42e989"
+  },
+  {
+   "path": "server/webclient/headless/toll-gate.ts",
+   "component": "leanclient",
+   "kind": "new",
+   "source": "core",
+   "bytes": 8344,
+   "sha256": "addb4ba7ea0e069002f840d75cb0e8a8bf918366d27d5c0ae3540b9d8445d68f"
+  },
+  {
+   "path": "server/webclient/headless/zanaris.ts",
+   "component": "brain-sim",
+   "kind": "new",
+   "source": "core",
+   "bytes": 5460,
+   "sha256": "09eab408931a2ad6b4dd7ce98f4193a04cc5816e41d31035a453544a3c68ce8f"
+  },
+  {
+   "path": "server/webclient/src/io/ClientStream.ts",
+   "component": "leanclient",
+   "kind": "patched",
+   "source": "core",
+   "bytes": 18167,
+   "sha256": "a44635ae8847db2e9b42e548b068cb038e4f325bc2ce82010a8f7c2f743605b4",
+   "upstreamBlob": "ab5a827ad4f887e7eed25d6c6ec3604628ada3c1",
+   "patch": "patches/server/webclient/src/io/ClientStream.ts.diff"
+  },
+  {
+   "path": "server/webclient/src/io/Packet.ts",
+   "component": "leanclient",
+   "kind": "patched",
+   "source": "core",
+   "bytes": 10500,
+   "sha256": "643a8ac6a7fbfa0ca217f0aea48104411ae0ba911f5db0351572f98ce7a2178a",
+   "upstreamBlob": "b9717706a49e6ef6e92a4a6549073b68c2c24931",
+   "patch": "patches/server/webclient/src/io/Packet.ts.diff"
+  },
+  {
+   "path": "tools/lockstep/quest-batch.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "template",
+   "bytes": 7514,
+   "sha256": "cfde8466046d2733fc8e23dfa2b6adbdd9ad6bb6542e0b7897aaefa648e61918"
+  },
+  {
+   "path": "tools/lockstep/run-sim.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "template",
+   "bytes": 2058,
+   "sha256": "5a7623eb2bc0d236179d8b47e69c215c215b123d7636692e882bf0c01d2e1f51"
+  },
+  {
+   "path": "tools/lockstep/sim-engine.ts",
+   "component": "lockstep-sim",
+   "kind": "new",
+   "source": "template",
+   "bytes": 5379,
+   "sha256": "18bf3ae2918b9b91430f4108f1e6b71dbc5b65b0e3aabd638c4e658f81fc45eb"
+  }
+ ]
+}
